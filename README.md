@@ -9,6 +9,14 @@ Built as a working prototype aligned with City of Parramatta Council's access an
 priorities. See `docs/` for the product idea, responsible-AI statement, data register and risk
 register.
 
+## Deployment
+
+Deployed on [Vercel](https://vercel.com): https://parramatta-explore.vercel.app
+
+Pushing to `main` triggers a production deployment. The app is a prototype — it is not a
+production council service and the data is illustrative.
+
+
 ## Features
 
 - **Explore** (`/`) — search and category filtering across real City of Parramatta events.
@@ -108,9 +116,4 @@ docs/                  Product brief, responsible-AI, data + risk registers
 
 See `docs/accessibility-review-and-next-steps.md` for the review and planned improvements.
 
-## Deployment
 
-Deployed on [Vercel](https://vercel.com): https://parramatta-explore.vercel.app
-
-Pushing to `main` triggers a production deployment. The app is a prototype — it is not a
-production council service and the data is illustrative.
