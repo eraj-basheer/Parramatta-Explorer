@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  --color-brand: #034f84;
+  --color-brand-deep: #02385f;
+  --color-sky: #92a8d1;
+  --color-mist: #e6ecf6;
+  --color-accent: #c94c4c;
+  --color-sun: #ffc93c;
+  --color-mint: #8fe3c2;
+  --color-lav: #cfc2f7;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+:root {
+  --page-bg: #ffffff;
+  --page-fg: #034f84;
+  --page-fg-soft: #35678f;
+  --surface: #ffffff;
+  --surface-soft: #e6ecf6;
+  --border: #92a8d1;
+  --header-bg: #034f84;
+  --header-fg: #ffffff;
+
+  --status-verified-bg: #d1fae5;
+  --status-verified-fg: #065f46;
+  --status-verified-border: #34d399;
+  --status-confirm-bg: #fef3c7;
+  --status-confirm-fg: #92400e;
+  --status-confirm-border: #fbbf24;
+  --status-missing-bg: #e4e4e7;
+  --status-missing-fg: #3f3f46;
+  --status-missing-border: #a1a1aa;
+}
+
+[data-theme="dark"] {
+  --page-bg: #071a2c;
+  --page-fg: #e6ecf6;
+  --page-fg-soft: #a9c4dd;
+  --surface: #0f2c47;
+  --surface-soft: #123a5c;
+  --border: #2c5a86;
+  --header-bg: #04121f;
+  --header-fg: #e6ecf6;
+
+  --status-verified-bg: #064e3b;
+  --status-verified-fg: #a7f3d0;
+  --status-verified-border: #059669;
+  --status-confirm-bg: #78350f;
+  --status-confirm-fg: #fde68a;
+  --status-confirm-border: #d97706;
+  --status-missing-bg: #334155;
+  --status-missing-fg: #e2e8f0;
+  --status-missing-border: #64748b;
+}
+
+/* Colour-blind safe status palettes. Status is never conveyed by colour alone
+   (every badge also carries a text label). */
+[data-cb="protan"],
+[data-cb="deuter"] {
+  --status-verified-bg: #dbeafe;
+  --status-verified-fg: #1e3a8a;
+  --status-verified-border: #3b82f6;
+  --status-confirm-bg: #ffedd5;
+  --status-confirm-fg: #7c2d12;
+  --status-confirm-border: #f97316;
+  --status-missing-bg: #e4e4e7;
+  --status-missing-fg: #27272a;
+  --status-missing-border: #71717a;
+}
+
+[data-cb="tritan"] {
+  --status-verified-bg: #fce7f3;
+  --status-verified-fg: #831843;
+  --status-verified-border: #ec4899;
+  --status-confirm-bg: #dcfce7;
+  --status-confirm-fg: #14532d;
+  --status-confirm-border: #22c55e;
+  --status-missing-bg: #e4e4e7;
+  --status-missing-fg: #27272a;
+  --status-missing-border: #71717a;
+}
+
+[data-cb="mono"] {
+  --status-verified-bg: #f4f4f5;
+  --status-verified-fg: #18181b;
+  --status-verified-border: #18181b;
+  --status-confirm-bg: #e4e4e7;
+  --status-confirm-fg: #18181b;
+  --status-confirm-border: #52525b;
+  --status-missing-bg: #d4d4d8;
+  --status-missing-fg: #18181b;
+  --status-missing-border: #a1a1aa;
+}
+
+html {
+  font-size: 100%;
+}
+html[data-text="lg"] {
+  font-size: 112.5%;
+}
+html[data-text="xl"] {
+  font-size: 125%;
+}
+html[data-text="xxl"] {
+  font-size: 137.5%;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--page-fg);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-sky);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px #034f84;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

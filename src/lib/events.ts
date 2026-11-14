@@ -1,0 +1,235 @@
+export interface ParraEvent {
+  id: string;
+  title: string;
+  categories: string[];
+  /** 0 means free entry. */
+  price: number;
+  /** Approximate distance from the Parramatta CBD, in kilometres. */
+  distanceKm: number;
+  when: string;
+  color: string;
+  blurb: string;
+  venue: string;
+  venueId: string;
+  source: string;
+}
+
+export const EVENT_CATEGORIES: { label: string; bg: string; ink: string }[] = [
+  { label: "All", bg: "#e6ecf6", ink: "#034f84" },
+  { label: "Free", bg: "#8fe3c2", ink: "#034f84" },
+  { label: "Family", bg: "#ffc93c", ink: "#034f84" },
+  { label: "Music", bg: "#cfc2f7", ink: "#034f84" },
+  { label: "Food", bg: "#f6c5c5", ink: "#034f84" },
+  { label: "Culture", bg: "#d3dff2", ink: "#034f84" },
+  { label: "Markets", bg: "#8fe3c2", ink: "#034f84" },
+  { label: "Riverside", bg: "#92a8d1", ink: "#034f84" },
+  { label: "First Nations", bg: "#8fe3c2", ink: "#034f84" },
+];
+
+/**
+ * Real events hosted or supported by the City of Parramatta, compiled from
+ * public Council listings and the Major Events and Festivals Strategy 2025-2030.
+ * Dates recur annually; always confirm current details with the organiser.
+ */
+export const PARRAMATTA_EVENTS: ParraEvent[] = [
+  {
+    id: "parramatta-lanes",
+    title: "Parramatta Lanes",
+    categories: ["Free", "Music", "Food", "Culture"],
+    price: 0,
+    distanceKm: 0.5,
+    when: "October",
+    color: "#cfc2f7",
+    blurb: "Laneway takeovers, music stages, art installations and a long line-up of performers.",
+    venue: "Parramatta CBD laneways",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "diwali",
+    title: "Diwali",
+    categories: ["Free", "Culture", "Family"],
+    price: 0,
+    distanceKm: 0.6,
+    when: "October / November",
+    color: "#ffc93c",
+    blurb: "One of the city's major annual celebrations, with lights, food and performances.",
+    venue: "Parramatta Square",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "christmas-in-parramatta",
+    title: "Christmas in Parramatta",
+    categories: ["Free", "Family", "Music"],
+    price: 0,
+    distanceKm: 0.4,
+    when: "From late November",
+    color: "#8fe3c2",
+    blurb: "Festive lights, markets, live music and community gatherings across the city.",
+    venue: "Parramatta Square and CBD",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "new-years-eve",
+    title: "New Year's Eve",
+    categories: ["Free", "Music", "Family"],
+    price: 0,
+    distanceKm: 0.5,
+    when: "31 December",
+    color: "#034f84",
+    blurb: "A family-friendly way to see out the year in Parramatta, with entertainment and fireworks.",
+    venue: "Parramatta Park and CBD",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "lunar-new-year",
+    title: "Lunar New Year",
+    categories: ["Free", "Culture", "Family"],
+    price: 0,
+    distanceKm: 0.7,
+    when: "January / February",
+    color: "#c94c4c",
+    blurb: "A family-friendly festival welcoming the new lunar year with food, dance and colour.",
+    venue: "Parramatta Square",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "australia-day",
+    title: "Australia Day in Parramatta",
+    categories: ["Free", "Family", "Music"],
+    price: 0,
+    distanceKm: 0.6,
+    when: "26 January",
+    color: "#ffc93c",
+    blurb: "A day of free community entertainment, food and activities by the river.",
+    venue: "Parramatta Park and riverfront",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "warami",
+    title: "Warami",
+    categories: ["Free", "First Nations", "Culture"],
+    price: 0,
+    distanceKm: 0.8,
+    when: "May – July",
+    color: "#8fe3c2",
+    blurb:
+      "A season of First Nations events on Dharug Country, including National Sorry Day programming.",
+    venue: "Across Parramatta",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "burramatta-naidoc",
+    title: "Burramatta NAIDOC",
+    categories: ["Free", "First Nations", "Culture", "Family"],
+    price: 0,
+    distanceKm: 0.9,
+    when: "July",
+    color: "#c94c4c",
+    blurb: "A celebration of First Nations culture, music, art and community on Dharug Country.",
+    venue: "Parramatta Park",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "make-music-day",
+    title: "Make Music Day",
+    categories: ["Free", "Music", "Culture"],
+    price: 0,
+    distanceKm: 0.5,
+    when: "21 June",
+    color: "#cfc2f7",
+    blurb: "Free live music in public spaces as part of the global Make Music Day.",
+    venue: "Parramatta CBD",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "winterlight",
+    title: "Winterlight",
+    categories: ["Family", "Culture"],
+    price: 12,
+    distanceKm: 0.5,
+    when: "July",
+    color: "#92a8d1",
+    blurb: "A winter festival with an outdoor ice rink, lights and family activities.",
+    venue: "Parramatta Square",
+    venueId: "venue-square",
+    source: "City of Parramatta major events",
+  },
+  {
+    id: "farmers-market",
+    title: "Parramatta Farmers Market",
+    categories: ["Free", "Markets", "Food"],
+    price: 0,
+    distanceKm: 0.3,
+    when: "Every Friday",
+    color: "#8fe3c2",
+    blurb: "Fresh produce and street food from local growers and makers, every week.",
+    venue: "Centenary Square",
+    venueId: "venue-square",
+    source: "City of Parramatta regular markets",
+  },
+  {
+    id: "riverside-food-market",
+    title: "Riverside Food Market",
+    categories: ["Free", "Food", "Markets", "Riverside"],
+    price: 0,
+    distanceKm: 0.4,
+    when: "This weekend",
+    color: "#8fe3c2",
+    blurb: "Food stalls and makers along the Parramatta River foreshore.",
+    venue: "Parramatta River foreshore",
+    venueId: "venue-square",
+    source: "City of Parramatta regular markets",
+  },
+  {
+    id: "family-movie-night",
+    title: "Family Movie Night",
+    categories: ["Free", "Family"],
+    price: 0,
+    distanceKm: 1.2,
+    when: "Select Saturdays",
+    color: "#ffc93c",
+    blurb: "Free outdoor family films on a big screen. Bring a blanket.",
+    venue: "Parramatta Park",
+    venueId: "venue-square",
+    source: "City of Parramatta community events",
+  },
+  {
+    id: "seniors-festival",
+    title: "Seniors Festival",
+    categories: ["Free", "Culture"],
+    price: 0,
+    distanceKm: 0.6,
+    when: "March",
+    color: "#cfc2f7",
+    blurb: "A program of free events and activities celebrating older residents.",
+    venue: "Across Parramatta",
+    venueId: "venue-square",
+    source: "City of Parramatta community events",
+  },
+  {
+    id: "youth-week",
+    title: "Youth Week",
+    categories: ["Free", "Music", "Culture"],
+    price: 0,
+    distanceKm: 0.7,
+    when: "April",
+    color: "#cfc2f7",
+    blurb: "Events by and for young people, including music, art and workshops.",
+    venue: "Parramatta CBD",
+    venueId: "venue-square",
+    source: "City of Parramatta community events",
+  },
+];
+
+export function getParraEvent(id: string): ParraEvent | undefined {
+  return PARRAMATTA_EVENTS.find((e) => e.id === id);
+}
