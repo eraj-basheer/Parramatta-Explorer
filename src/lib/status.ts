@@ -1,5 +1,12 @@
 import type { CSSProperties } from "react";
-import type { VerificationStatus } from "./types";
+import type { Feature, VerificationStatus } from "./types";
+
+export function featureStatus(feature: Feature): VerificationStatus {
+  if (feature.attributes.some((a) => a.status === "requires_confirmation"))
+    return "requires_confirmation";
+  if (feature.attributes.some((a) => a.status === "missing")) return "missing";
+  return "verified";
+}
 
 export const STATUS_META: Record<
   VerificationStatus,

@@ -1,7 +1,7 @@
 import type { Feature } from "@/lib/types";
 import { ProvenanceLine, formatValue } from "./ProvenanceLine";
 import { StatusBadge } from "./StatusBadge";
-import { featureStatus } from "./AccessMap";
+import { featureStatus } from "@/lib/status";
 
 export function FeatureCard({
   feature,
