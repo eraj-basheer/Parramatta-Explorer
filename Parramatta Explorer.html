@@ -1,0 +1,1057 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Parramatta Explorer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: dark-blue masthead with bunting, three views (visitors, event managers, council) switched by hash.
+   Visitors: sticky-free two-column (profile | event list), access labels on every card. */
+:root{
+  --bg:#F2F6FB; --surface:#FFFFFF; --ink:#0A2F4A; --muted:#41586E; --line:#CFDAE8;
+  --brand:#034F84; --brand-ink:#FFFFFF; --link:#034F84;
+  --accent:#C94C4C; --accent-ink:#FFFFFF;
+  --yes-bg:#D8F3E7; --yes-ink:#07583D; --gap-bg:#FFF0C2; --gap-ink:#5E4300;
+  --tint:#E6ECF6; --sky:#92A8D1; --sun:#FFC93C; --mint:#8FE3C2; --lilac:#CFC2F7;
+  --focus:#034F84; --land:#EAF0F7; --water:#A8CBEA; --park:#C3EAD2;
+  --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-head:'Space Grotesk','Inter',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#071A2B; --surface:#0E2841; --ink:#E9F1FA; --muted:#A5B9CF; --line:#24425F;
+    --link:#9DC6F2; --tint:#14304D; --yes-bg:#12503B; --yes-ink:#CFF5E2; --gap-bg:#4A3A0B; --gap-ink:#FFE9A8;
+    --focus:#CFE3F8; --land:#0C2238; --water:#1B4E7A; --park:#134A36; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#071A2B; --surface:#0E2841; --ink:#E9F1FA; --muted:#A5B9CF; --line:#24425F;
+  --link:#9DC6F2; --tint:#14304D; --yes-bg:#12503B; --yes-ink:#CFF5E2; --gap-bg:#4A3A0B; --gap-ink:#FFE9A8;
+  --focus:#CFE3F8; --land:#0C2238; --water:#1B4E7A; --park:#134A36; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+a{color:var(--link)}
+h1,h2,h3{font-family:var(--font-head);line-height:1.15;letter-spacing:-0.01em;text-wrap:balance;margin:0}
+p{margin:0}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;cursor:pointer}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;max-width:100%}
+textarea{width:100%;min-height:76px;resize:vertical}
+label{font-weight:600;font-size:14px}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:11px 22px;font-weight:700;font-size:15px;transition:transform .15s ease,filter .15s ease}
+.btn:hover{filter:brightness(.94);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--brand)}
+.btn.small{padding:7px 14px;font-size:13px}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
+
+/* masthead */
+.mast{background:var(--brand);color:var(--brand-ink);position:relative;padding-top:34px}
+.bunting{position:absolute;inset:0 0 auto 0;height:30px;width:100%;display:block}
+.mast-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding-top:14px;padding-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:700;font-size:20px;color:#fff;text-decoration:none}
+.nav{display:flex;flex-wrap:wrap;gap:8px}
+.nav a{color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:9px 16px;border-radius:999px;border:2px solid transparent}
+.nav a[aria-current="page"]{background:var(--sun);color:#0A2F4A}
+.nav a:not([aria-current="page"]):hover{border-color:#92A8D1}
+.lang{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600}
+.lang select{padding:7px 10px;border-radius:999px;background:#fff;color:#0A2F4A;border:0}
+.mast :focus-visible{outline-color:#fff}
+.hero{padding-top:18px;padding-bottom:44px;display:flex;flex-direction:column;gap:12px;max-width:760px}
+.hero h1{font-size:clamp(32px,5vw,52px)}
+.hero p{font-size:18px;color:#E6ECF6}
+.hl{background:var(--accent);color:#fff;padding:0 10px;border-radius:10px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+main{padding-top:28px;padding-bottom:56px}
+.view[hidden]{display:none}
+.layout{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel h2{font-size:21px}
+.fine{font-size:13px;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.checks{display:flex;flex-direction:column;gap:8px;border:0;margin:0;padding:0;min-width:0}
+.checks legend{font-weight:700;font-size:15px;padding:0;margin-bottom:6px}
+.check{display:flex;align-items:flex-start;gap:10px;font-weight:500;font-size:15px}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent);flex:0 0 auto}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+.toolbar .field{flex:1 1 200px}
+.count{font-weight:600;font-size:15px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;align-items:start}
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.card.dim{opacity:.72}
+.card-top{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;color:#0A2F4A;font-size:13px;font-weight:700}
+.pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 11px;font-size:12px;font-weight:700;background:#fff;color:#0A2F4A;white-space:nowrap}
+.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card h3{font-size:20px}
+.meta{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px}
+.tag.yes{background:var(--yes-bg);color:var(--yes-ink)}
+.tag.gap{background:var(--gap-bg);color:var(--gap-ink)}
+.tag.cost{background:var(--tint);color:var(--ink)}
+details.more{border-top:1.5px solid var(--line);padding-top:10px}
+details.more>summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--link);padding:4px 0}
+.dl{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:14px;margin:10px 0}
+.dl dt{margin:0}.dl dd{margin:0;font-weight:700}
+.dl .y{color:var(--yes-ink);background:var(--yes-bg);border-radius:999px;padding:0 10px}
+.dl .n{color:var(--gap-ink);background:var(--gap-bg);border-radius:999px;padding:0 10px}
+.sub{display:flex;flex-direction:column;gap:10px;border-top:1.5px dashed var(--line);padding-top:12px;margin-top:6px}
+.sub h4{margin:0;font-family:var(--font-head);font-size:16px}
+.stars{display:flex;flex-wrap:wrap;gap:6px;border:0;margin:0;padding:0}
+.stars legend{font-weight:600;font-size:14px;padding:0;margin-bottom:4px}
+.stars label{display:inline-flex;align-items:center;gap:4px;font-weight:600;border:1.5px solid var(--line);border-radius:999px;padding:4px 10px;cursor:pointer}
+.stars input{accent-color:var(--accent);width:16px;height:16px;margin:0}
+.fb{background:var(--tint);border-radius:12px;padding:10px 12px;font-size:14px;display:flex;flex-direction:column;gap:2px;overflow-wrap:anywhere}
+.fb b{font-weight:700}
+.empty{background:var(--tint);border-radius:14px;padding:18px;font-size:15px}
+
+.section{margin-top:44px;display:flex;flex-direction:column;gap:16px}
+.section h2{font-size:clamp(24px,3vw,32px)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.tile{border-radius:18px;padding:18px;color:#0A2F4A;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tile h3{font-size:19px}
+.tile p{font-size:15px}
+.tile .gapnote{font-size:13px;font-weight:600;background:rgba(255,255,255,.75);border-radius:10px;padding:6px 10px}
+.t1{background:var(--sun)}.t2{background:var(--mint)}.t3{background:var(--lilac)}.t4{background:var(--sky)}
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start}
+.form2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button{border:2px solid var(--brand);background:transparent;color:var(--ink);border-radius:999px;padding:8px 18px;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--brand);color:#fff}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr) 56px;gap:10px;align-items:center;font-size:14px}
+.bar{height:14px;border-radius:999px;background:var(--tint);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.bar-row b{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:520px){.bar-row{grid-template-columns:minmax(0,1fr) 56px}.bar-row .bar{grid-column:1 / -1;order:3}}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1.5px solid var(--line)}
+.scroll-x{overflow-x:auto}
+.note{background:var(--gap-bg);color:var(--gap-ink);border-radius:12px;padding:12px 14px;font-size:14px}
+.ctl{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.ctl .seg button{padding:7px 15px;font-size:14px}
+.mapbox{position:relative;width:100%;max-width:820px;aspect-ratio:10/9;border-radius:18px;overflow:hidden;border:1.5px solid var(--line);background:var(--land)}
+.mapbox svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mapbox text{font-family:var(--font-body);font-size:2.6px;fill:var(--muted)}
+.pin{position:absolute;transform:translate(-50%,-50%);background:none;border:0;padding:0;display:flex}
+.pin span{position:absolute;top:50%;transform:translateY(-50%)}
+.pin.l span{right:calc(100% + 6px)}
+.pin.r span{left:calc(100% + 6px)}
+.pin b{display:flex;align-items:center;justify-content:center;min-width:32px;height:32px;border-radius:999px;background:var(--accent);color:#fff;border:3px solid #fff;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.pin.sel b{background:var(--brand);transform:scale(1.15)}
+.pin span{background:var(--surface);color:var(--ink);border-radius:8px;padding:1px 7px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.rows{display:flex;flex-direction:column;gap:10px}
+.row{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.row strong{font-family:var(--font-head);font-size:17px}
+.cal-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.cal-head h3{font-size:22px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .wd{font-size:12px;font-weight:700;text-align:center;color:var(--muted);padding:4px 0}
+.cal-day{min-height:92px;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:3px;align-items:stretch;text-align:left;color:var(--ink);min-width:0;overflow:hidden}
+.cal-day.empty{background:transparent;border-color:transparent;pointer-events:none}
+.cal-day.in{background:var(--tint);border-color:var(--sky)}
+.cal-day.today{border-color:var(--accent);border-width:2.5px}
+.cal-day.sel{outline:3px solid var(--focus);outline-offset:1px}
+.cal-day .n{font-weight:700;font-size:14px}
+.cal-day .ev{font-size:11px;line-height:1.25;border-radius:6px;padding:2px 5px;color:#0A2F4A;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.cal-day .more{font-size:11px;font-weight:700;color:var(--muted)}
+.cal-day .dot{display:none;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:999px;padding:0 6px;align-self:flex-start}
+@media (max-width:700px){.cal-day{min-height:54px;padding:4px}.cal-day .ev,.cal-day .more{display:none}.cal-day .dot{display:inline-block}}
+.plan{position:relative;width:100%;max-width:860px;aspect-ratio:10/7;border-radius:18px;overflow:hidden;border:1.5px solid var(--line);background:var(--land)}
+.plan svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.plan text{font-family:var(--font-body);font-size:2.3px;font-weight:600;fill:#0A2F4A}
+.poi{position:absolute;transform:translate(-50%,-50%);min-width:30px;height:30px;border-radius:999px;border:3px solid #fff;color:#fff;font-weight:800;font-size:12px;padding:0 5px;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.poi.sel{outline:3px solid var(--focus);outline-offset:2px;transform:translate(-50%,-50%) scale(1.15)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;border:0;margin:0;padding:0}
+.legend legend{font-weight:700;padding:0;margin-bottom:8px}
+.legend .check{font-size:14px}
+.swatch{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:999px;color:#fff;font-weight:800;font-size:11px;padding:0 4px;flex:0 0 auto}
+.dummy{background:var(--gap-bg);color:var(--gap-ink);border-radius:12px;padding:12px 14px;font-size:14px;font-weight:600}
+.art{display:none;height:92px;border-bottom:2.5px solid #1B1340}
+.evimg{display:block;width:100%;height:150px;object-fit:cover}
+.skyline{display:none;width:100%;height:84px;margin-top:-6px}
+
+/* POSTER LOOK: bold colour blocks, thick ink outlines, hard shadows. Keeps its own light palette in every theme. */
+:root[data-style="poster"]{
+  --bg:#F1EEFF; --surface:#FFFFFF; --ink:#1B1340; --muted:#4A4270; --line:#1B1340;
+  --brand:#1B1340; --brand-ink:#FFFFFF; --link:#3A2BB5; --accent:#FF5A4E; --accent-ink:#1B1340;
+  --yes-bg:#B8F2D9; --yes-ink:#0B4A33; --gap-bg:#FFE58A; --gap-ink:#3F2F00; --tint:#E3DCFF; --sky:#6EC1FF; --focus:#1B1340;
+  --land:#E3DCFF; --water:#6EC1FF; --park:#A8EBC9; color-scheme:light;
+}
+[data-style="poster"] .art{display:block}
+[data-style="poster"] .skyline{display:block}
+[data-style="poster"] .mast{background:#FFC93C;color:#1B1340;padding-bottom:0;border-bottom:0}
+[data-style="poster"] .brand{color:#1B1340}
+[data-style="poster"] .brand svg circle{stroke:#1B1340}
+[data-style="poster"] .brand svg path{fill:#FF5A4E}
+[data-style="poster"] .nav a{color:#1B1340;border:2.5px solid transparent}
+[data-style="poster"] .nav a:not([aria-current="page"]):hover{border-color:#1B1340}
+[data-style="poster"] .nav a[aria-current="page"]{background:#1B1340;color:#fff}
+[data-style="poster"] .mast :focus-visible{outline-color:#1B1340}
+[data-style="poster"] .lang select{border:2.5px solid #1B1340}
+[data-style="poster"] .hero h1{font-size:clamp(36px,6vw,68px);line-height:1.02;letter-spacing:-0.03em;text-transform:uppercase}
+[data-style="poster"] .hero p{color:#1B1340;font-weight:500}
+[data-style="poster"] .hero{padding-bottom:18px}
+[data-style="poster"] .card,[data-style="poster"] .panel,[data-style="poster"] .row,[data-style="poster"] .mapbox,[data-style="poster"] .plan,[data-style="poster"] .tile,[data-style="poster"] .empty{border:2.5px solid #1B1340;box-shadow:5px 5px 0 #1B1340}
+[data-style="poster"] .card{border-radius:16px;transition:transform .15s ease,box-shadow .15s ease}
+[data-style="poster"] .card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #1B1340}
+[data-style="poster"] .card-top{border-bottom:2.5px solid #1B1340}
+[data-style="poster"] .card h3{font-size:22px;text-transform:uppercase;letter-spacing:-0.01em}
+[data-style="poster"] .cal-day{border:2px solid #1B1340}
+[data-style="poster"] .cal-day.today{background:#FFC93C}
+[data-style="poster"] .cal-day .dot{color:#1B1340}
+[data-style="poster"] .btn{border:2.5px solid #1B1340;box-shadow:3px 3px 0 #1B1340}
+[data-style="poster"] .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #1B1340;filter:none}
+[data-style="poster"] .btn.ghost{background:#fff}
+[data-style="poster"] .seg button{border:2.5px solid #1B1340;background:#fff}
+[data-style="poster"] .seg button[aria-pressed="true"]{background:#1B1340;color:#fff}
+[data-style="poster"] input,[data-style="poster"] select,[data-style="poster"] textarea{border:2.5px solid #1B1340}
+[data-style="poster"] .tag,[data-style="poster"] .pill{border:2px solid #1B1340}
+[data-style="poster"] .pin b{color:#1B1340;border-color:#1B1340}
+[data-style="poster"] .pin.sel b{color:#fff}
+[data-style="poster"] .poi{border-color:#1B1340}
+[data-style="poster"] .section h2,[data-style="poster"] .panel h2,[data-style="poster"] #ev-page h2{text-transform:uppercase;letter-spacing:-0.02em}
+[data-style="poster"] .bar{border:2px solid #1B1340;background:#fff}
+[data-style="poster"] footer{background:#1B1340;color:#fff}
+[data-style="poster"] footer a{color:#FFC93C}
+[data-style="poster"] footer .wrap{padding-top:4px}
+@media (prefers-reduced-motion:reduce){[data-style="poster"] .card,[data-style="poster"] .btn{transition:none}[data-style="poster"] .card:hover,[data-style="poster"] .btn:hover{transform:none}}
+footer{background:var(--tint);padding-top:28px;padding-bottom:36px;font-size:14px}
+footer .wrap{display:flex;flex-direction:column;gap:8px}
+:root[dir="rtl"] .bar-row b{text-align:left}
+</style>
+
+<header class="mast">
+<svg class="bunting" aria-hidden="true" preserveAspectRatio="none" height="30">
+<defs><pattern id="fl" width="240" height="30" patternUnits="userSpaceOnUse">
+<path d="M0 0 H40 L20 28 Z" fill="#C94C4C"></path><path d="M40 0 H80 L60 28 Z" fill="#FFC93C"></path><path d="M80 0 H120 L100 28 Z" fill="#8FE3C2"></path>
+<path d="M120 0 H160 L140 28 Z" fill="#CFC2F7"></path><path d="M160 0 H200 L180 28 Z" fill="#E6ECF6"></path><path d="M200 0 H240 L220 28 Z" fill="#C94C4C"></path>
+</pattern></defs>
+<rect width="100%" height="30" fill="url(#fl)"></rect>
+</svg>
+<div class="wrap">
+<div class="mast-row">
+<a class="brand" href="#visitors">
+<svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="#fff" stroke-width="2.4"></circle><path d="M20 10 L16.5 16.5 L10 20 L13.5 13.5 Z" fill="#FFC93C"></path></svg>
+Parramatta Explorer
+</a>
+<nav class="nav" aria-label="Views">
+<a href="#visitors" id="nav-visitors" data-i18n="nav_visitors">Visitors</a>
+<a href="#managers" id="nav-managers" data-i18n="nav_managers">Event managers</a>
+<a href="#council" id="nav-council" data-i18n="nav_council">Council</a>
+</nav>
+<div class="lang"><label for="lang" data-i18n="language">Language</label>
+<select id="lang"><option value="en">English</option><option value="zh">简体中文</option><option value="ar">العربية</option><option value="hi">हिन्दी</option></select></div>
+</div>
+<div class="hero">
+<h1><span data-i18n="h1">Find events that work for you.</span></h1>
+<p data-i18n="sub">Real listings from At Parramatta, with the access details visitors keep asking for.</p>
+</div>
+</div>
+<svg class="skyline" viewBox="0 0 1200 110" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<defs><pattern id="win" width="14" height="16" patternUnits="userSpaceOnUse"><rect x="3" y="4" width="6" height="7" fill="#FFC93C"></rect></pattern>
+<g id="bl"><rect x="0" y="0" width="60" height="100"></rect></g></defs>
+<g stroke="#1B1340" stroke-width="3">
+<rect x="20" y="52" width="70" height="50" fill="#B9A6FF"></rect><rect x="20" y="52" width="70" height="50" fill="url(#win)" stroke="none"></rect>
+<rect x="110" y="28" width="60" height="74" fill="#6EC1FF"></rect><rect x="110" y="28" width="60" height="74" fill="url(#win)" stroke="none"></rect>
+<rect x="190" y="60" width="80" height="42" fill="#5AD6A4"></rect><rect x="190" y="60" width="80" height="42" fill="url(#win)" stroke="none"></rect>
+<rect x="300" y="14" width="56" height="88" fill="#FF5A4E"></rect><rect x="300" y="14" width="56" height="88" fill="url(#win)" stroke="none"></rect>
+<rect x="380" y="46" width="90" height="56" fill="#B9A6FF"></rect><rect x="380" y="46" width="90" height="56" fill="url(#win)" stroke="none"></rect>
+<rect x="500" y="34" width="64" height="68" fill="#FFFFFF"></rect><rect x="500" y="34" width="64" height="68" fill="url(#win)" stroke="none"></rect>
+<rect x="590" y="62" width="100" height="40" fill="#6EC1FF"></rect><rect x="590" y="62" width="100" height="40" fill="url(#win)" stroke="none"></rect>
+<rect x="720" y="22" width="58" height="80" fill="#5AD6A4"></rect><rect x="720" y="22" width="58" height="80" fill="url(#win)" stroke="none"></rect>
+<rect x="800" y="54" width="84" height="48" fill="#FF5A4E"></rect><rect x="800" y="54" width="84" height="48" fill="url(#win)" stroke="none"></rect>
+<rect x="910" y="30" width="62" height="72" fill="#B9A6FF"></rect><rect x="910" y="30" width="62" height="72" fill="url(#win)" stroke="none"></rect>
+<rect x="1000" y="58" width="90" height="44" fill="#FFFFFF"></rect><rect x="1000" y="58" width="90" height="44" fill="url(#win)" stroke="none"></rect>
+<rect x="1110" y="40" width="70" height="62" fill="#6EC1FF"></rect><rect x="1110" y="40" width="70" height="62" fill="url(#win)" stroke="none"></rect>
+<rect x="0" y="100" width="1200" height="10" fill="#6EC1FF"></rect>
+<path d="M600 92 h70 l-10 14 h-50 z" fill="#FF5A4E"></path><rect x="618" y="82" width="26" height="10" fill="#fff"></rect>
+</g>
+</svg>
+</header>
+
+<main class="wrap">
+
+<!-- VISITORS -->
+<section class="view" id="view-visitors" aria-label="Visitors">
+<div class="layout">
+<aside class="panel" aria-label="Your profile">
+<h2 data-i18n="needs">What do you need?</h2>
+<div class="field">
+<label for="age">Age group</label>
+<select id="age">
+<option value="">Prefer not to say</option><option>Under 18</option><option>18 to 24</option><option>25 to 34</option><option>35 to 54</option><option>55 and over</option>
+</select>
+</div>
+<fieldset class="checks">
+<legend>Show me events that list</legend>
+<label class="check"><input type="checkbox" id="n-wheelchair"><span data-i18n="n_wheel">Wheelchair access</span></label>
+<label class="check"><input type="checkbox" id="n-hearing"><span data-i18n="n_hear">Hearing support</span> <span class="fine">(Auslan, hearing loop or captions)</span></label>
+<label class="check"><input type="checkbox" id="n-animals"><span data-i18n="n_animal">Service animals welcome</span></label>
+<label class="check"><input type="checkbox" id="n-kids"><span>Family and kids activities</span></label>
+<label class="check"><input type="checkbox" id="n-free"><span data-i18n="n_free">Free</span> <span class="fine">(or free with booking)</span></label>
+</fieldset>
+<p class="fine">Saved only in this browser. Your age group is used for the summary on the Council tab and nothing else.</p>
+</aside>
+
+<div>
+<div class="ctl">
+<div class="seg" id="view-seg" role="group" aria-label="View">
+<button type="button" data-view="list" aria-pressed="true">List</button>
+<button type="button" data-view="map" aria-pressed="false">Map</button>
+<button type="button" data-view="cal" aria-pressed="false">Calendar</button>
+</div>
+<div class="seg" id="when-seg" role="group" aria-label="When">
+<button type="button" data-when="today" aria-pressed="false">Today</button>
+<button type="button" data-when="7" aria-pressed="false">Next 7 days</button>
+<button type="button" data-when="15" aria-pressed="false">Next 15 days</button>
+<button type="button" data-when="30" aria-pressed="false">Next month</button>
+<button type="button" data-when="all" aria-pressed="true">All dates</button>
+</div>
+<p class="fine" id="range-note"></p>
+</div>
+<div class="toolbar">
+<div class="field"><label for="q" data-i18n="search">Search events</label><input id="q" type="search" placeholder="Market, music, kids"></div>
+<div class="field"><label for="cat">Category</label><select id="cat"></select></div>
+</div>
+<div class="checks" style="flex-direction:row;flex-wrap:wrap;gap:18px;margin-top:12px">
+<label class="check"><input type="checkbox" id="confirmed"><span data-i18n="confirmed">Only show events that match my needs</span></label>
+<label class="check"><input type="checkbox" id="ended"><span>Include ended events</span></label>
+</div>
+<div class="count" id="count" aria-live="polite"></div>
+<div id="v-list"><div class="grid" id="grid"></div></div>
+<div id="v-map" hidden>
+<div class="mapbox" id="mapbox">
+<svg viewBox="0 0 100 90" role="img" aria-label="Stylised map of central Parramatta">
+<rect width="100" height="90" fill="var(--land)"></rect>
+<path d="M22 44 C30 40 46 42 50 50 C54 56 44 60 32 58 C22 56 16 50 22 44 Z" fill="var(--park)"></path>
+<path d="M0 54 C16 50 30 62 48 62 C64 62 78 70 100 64 L100 71 C80 77 64 69 48 69 C28 69 14 59 0 61 Z" fill="var(--water)"></path>
+<rect x="53.6" y="76.4" width="2.4" height="2.4" fill="var(--muted)"></rect>
+<text x="57" y="78.4">Parramatta Station</text>
+<text x="24" y="52">Parramatta Park</text>
+<text x="6" y="58" transform="rotate(8 6 58)">Parramatta River</text>
+<text x="3" y="87.5">Stylised, not to scale. Positions are approximate.</text>
+</svg>
+<div id="pins"></div>
+</div>
+<div id="map-panel" class="rows" style="margin-top:16px"></div>
+<div id="map-unplaced" style="margin-top:16px"></div>
+</div>
+<div id="v-cal" hidden>
+<div class="cal-head"><h3 id="cal-title"></h3><div class="seg"><button type="button" data-nav="-1" aria-label="Previous month">Previous</button><button type="button" data-nav="0">This month</button><button type="button" data-nav="1" aria-label="Next month">Next</button></div></div>
+<div class="cal" id="cal"></div>
+<h3 id="cal-day-title" style="font-size:19px;margin:16px 0 8px"></h3>
+<div class="rows" id="cal-day-list"></div>
+<p class="fine" id="cal-note" style="margin-top:10px"></p>
+</div>
+<p class="fine" style="margin-top:14px">"Not listed" means At Parramatta's page did not say. It does not mean the feature is missing. Check with the organiser.</p>
+</div>
+</div>
+
+<div class="section" id="getting-there">
+<h2>Getting there</h2>
+<p class="fine">From At Parramatta's Parking and Getting around pages, read 12 Nov 2026. Check the linked pages for current prices and timetables.</p>
+<div class="cols">
+<div class="tile t1"><h3>Train</h3><p>It is a 30-minute ride from Sydney's Town Hall to Parramatta Station. Harris Park and Westmead stations are close by.</p><p class="gapnote">Lifts and step-free access: not stated on the page.</p></div>
+<div class="tile t2"><h3>Light rail</h3><p>Westmead to Carlingford via the Parramatta CBD and Camellia. 12 km of two-way track and 16 stops.</p><p class="gapnote">Step-free access: not stated on the page.</p></div>
+<div class="tile t3"><h3>Ferry</h3><p>The F3 Parramatta River ferry runs from Parramatta Quay to Circular Quay.</p><p class="gapnote">Boarding access: not stated on the page.</p></div>
+<div class="tile t4"><h3>Parking</h3><p>Up to 18 hours for $14 at the Justice Precinct and Parramatta Station (Wentworth Street) car parks. Fennell Street is $10.70 all day. Both first-named car parks give up to 2 hours free on Sundays.</p><p class="gapnote">Accessible bays: not stated on the page. The Parking Finder lists accessible parking.</p></div>
+</div>
+<p class="fine"><a href="https://atparramatta.com/plan-your-stay/parking" target="_blank" rel="noopener">Parking on At Parramatta</a> · <a href="https://atparramatta.com/plan-your-stay/getting-and-around-parramatta" target="_blank" rel="noopener">Getting around on At Parramatta</a></p>
+</div>
+</section>
+
+<!-- EVENT MANAGERS -->
+<section class="view" id="view-managers" aria-label="Event managers" hidden>
+<div id="mgr-login" class="two">
+<div class="panel">
+<h2>Event managers</h2>
+<p>Organisers sign in to add access details, social links and see what visitors say. Visitors never need an account.</p>
+<div class="seg" role="group" aria-label="Sign in or sign up">
+<button type="button" id="m-tab-in" aria-pressed="true">Sign in</button>
+<button type="button" id="m-tab-up" aria-pressed="false">Sign up</button>
+</div>
+<form id="m-form" class="field" style="gap:12px">
+<div class="field" id="m-org-wrap" hidden><label for="m-org">Organisation</label><input id="m-org" autocomplete="organization"></div>
+<div class="field"><label for="m-email">Email</label><input id="m-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+<button class="btn" type="submit" id="m-go">Continue</button>
+</form>
+<p class="note">Demo only. No account is created, no password is asked for and nothing leaves your browser. A real version needs proper sign-in.</p>
+</div>
+<div class="panel">
+<h2>Different tools for different people</h2>
+<div class="chips">
+<span class="tag cost">Visitors: search, filter, review, report an issue</span>
+</div>
+<div class="chips">
+<span class="tag cost">Managers: add events, access details, social links, read feedback</span>
+</div>
+<div class="chips">
+<span class="tag cost">Council: see data gaps and visitor trends</span>
+</div>
+<p class="fine">To list a real event today, use the council's own form.</p>
+<a href="https://www.cityofparramatta.nsw.gov.au/community/events/submit-your-event" target="_blank" rel="noopener">Submit your event (City of Parramatta)</a>
+</div>
+</div>
+
+<div id="mgr-dash" hidden>
+<div class="panel" style="flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center">
+<div><h2>Event manager dashboard</h2><p class="fine" id="m-who"></p></div>
+<button class="btn ghost small" type="button" id="m-out">Sign out</button>
+</div>
+<div class="two" style="margin-top:20px">
+<form class="panel" id="ev-form">
+<h2>Add your event</h2>
+<div class="form2">
+<div class="field"><label for="e-title">Event name</label><input id="e-title" required></div>
+<div class="field"><label for="e-venue">Venue</label><input id="e-venue" required></div>
+<div class="field"><label for="e-start">Start date</label><input id="e-start" type="date" required></div>
+<div class="field"><label for="e-end">End date</label><input id="e-end" type="date"></div>
+<div class="field"><label for="e-cost">Cost</label><select id="e-cost"><option value="Free">Free</option><option value="Free with booking">Free with booking</option><option value="">Paid or not stated</option></select></div>
+<div class="field"><label for="e-cat">Category</label><select id="e-cat"></select></div>
+</div>
+<fieldset class="checks"><legend>Access details you can confirm</legend>
+<div id="e-access" class="form2"></div>
+</fieldset>
+<div class="field"><label for="e-parking">Parking note</label><input id="e-parking" placeholder="Nearest accessible bays, prices"></div>
+<div class="field"><label for="e-transit">Public transport note</label><input id="e-transit" placeholder="Nearest stop and step-free route"></div>
+<div class="field"><label for="e-social">Social media link</label><input id="e-social" type="url" placeholder="https://"></div>
+<div class="field"><label for="e-img">Event image (optional)</label><input id="e-img" type="file" accept="image/*"><span class="fine">Resized in your browser and kept only here. Use an image you have the right to use.</span></div>
+<button class="btn" type="submit">Add to the visitor list</button>
+<p class="fine">Demo listings appear in the Visitors tab with a "Your demo listing" label and stay in this browser.</p>
+</form>
+<div class="panel">
+<h2>Feedback on your events</h2>
+<div id="m-feedback"></div>
+<h3 style="font-size:17px;margin-top:6px">Your demo listings</h3>
+<div id="m-listings"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- COUNCIL -->
+<section class="view" id="view-council" aria-label="Council" hidden>
+<div class="two" style="grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)">
+<div class="panel">
+<h2>Access data gaps in current listings</h2>
+<p class="fine" id="gap-intro"></p>
+<div class="bars" id="gap-bars"></div>
+<p class="note">A low number means the At Parramatta page did not publish the detail. It does not show the venue lacks the feature.</p>
+</div>
+<div class="panel">
+<h2>Visitor summary</h2>
+<p class="note">Built from this browser only, so it shows one visitor. A real version needs many people who agree to share their profile, summarised so nobody can be identified.</p>
+<div id="seg"></div>
+</div>
+</div>
+<div class="panel" style="margin-top:20px">
+<h2>Feedback and complaints in this browser</h2>
+<div id="council-fb"></div>
+</div>
+</section>
+
+<!-- EVENT PAGE -->
+<section class="view" id="view-event" aria-label="Event page" hidden>
+<div id="ev-page" style="display:flex;flex-direction:column;gap:14px"></div>
+</section>
+
+</main>
+
+<footer>
+<div class="wrap">
+<strong style="font-family:var(--font-head);font-size:18px">Parramatta Explorer</strong>
+<span>Map positions are approximate and drawn by this prototype from general knowledge of Parramatta, not taken from At Parramatta. The Barton Park pin marks the suburb, not the exact park.</span>
+<span>Venue plans showing toilets, ramps and other facilities are dummy illustrations made for this prototype. They are not real venue plans.</span>
+<span>Event names, dates, venues and access details come from <a href="https://atparramatta.com/whats-on" target="_blank" rel="noopener">atparramatta.com</a>, read on 12 Nov 2026. Details change, so check the event page.</span>
+<span>An independent project. Not affiliated with or endorsed by the City of Parramatta or At Parramatta.</span>
+<span>Interface labels in Chinese, Arabic and Hindi were translated by Claude and have not been checked by a native speaker. Event content stays in English.</span>
+<span>We acknowledge the Baramadagal clan of the Dharug Nation, the Traditional Owners of the land and waters of Parramatta, and pay respect to Elders past and present.</span>
+</div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var SRC = 'https://atparramatta.com';
+var ACCESS = [
+  ['wheelchair','Wheelchair access'],['auslan','Auslan'],['loop','Hearing loop'],['captions','Closed captions'],
+  ['audio','Audio description'],['braille','Braille'],['animals','Service animals welcome'],
+  ['toilets','Accessible toilets'],['changing','Changing Places bathroom'],['parking','Accessible parking'],['transit','Public transport info']
+];
+var CATS = ['Arts, Culture & Heritage','Community & Civic','Concerts, Theatre & Music','Family & Kids','Festivals & Major Events','Food & Drink','Markets & Shopping','Sports','Other'];
+var COLORS = {'Arts, Culture & Heritage':'#CFC2F7','Community & Civic':'#E6ECF6','Concerts, Theatre & Music':'#CFC2F7','Family & Kids':'#FFC93C','Festivals & Major Events':'#FFC93C','Food & Drink':'#8FE3C2','Markets & Shopping':'#8FE3C2','Sports':'#92A8D1','Other':'#E6ECF6'};
+
+/* Read from atparramatta.com on 12 Nov 2026. Categories are this prototype's own reading, not At Parramatta's. */
+var EVENTS = [
+ {id:'pickle',title:'Pickleball Pop-Up in Parramatta Square',start:'2026-09-22',end:'2026-11-24',venue:'Parramatta Square',cat:'Sports',url:SRC+'/whats-on/pickleball-pop-parramatta-square',access:{}},
+ {id:'bush',title:'Bush School at Parramatta Park',start:'2026-10-14',end:'2026-12-16',venue:'Parramatta Park',cat:'Family & Kids',url:SRC+'/whats-on/bush-school-parramatta-park',access:{}},
+ {id:'farmers',title:'Parramatta Farmers Market',start:'2026-07-22',end:'2026-12-16',venue:'',cat:'Markets & Shopping',url:SRC+'/whats-on/parramatta-farmers-market',access:{}},
+ {id:'live',title:'Live Music at Parramatta Square',start:'2026-10-30',end:'2026-12-01',venue:'Parramatta Square and Parramatta Farmers Markets',cat:'Concerts, Theatre & Music',url:SRC+'/whats-on/live-music-parramatta-square',access:{}},
+ {id:'wsti',title:'WSTI Festi',start:'2026-11-05',end:'2026-11-21',venue:'',cat:'Other',url:SRC+'/whats-on/wsti-festi',access:{}},
+ {id:'powerhouse',title:'Powerhouse Parramatta Opening Festival',start:'2026-11-07',end:'2026-11-29',time:'9.00am to 10.00pm',venue:'Powerhouse Parramatta, 34 Phillip St',cost:'Free with booking',cat:'Arts, Culture & Heritage',url:SRC+'/whats-on/powerhouse-parramatta-opening-festival',
+   note:'More than 170 events over 23 days. Some are separately ticketed.',access:{wheelchair:1,auslan:1,loop:1,captions:1,audio:1,braille:1,animals:1}},
+ {id:'rsl-cp',title:'Remembrance Day Service, City of Parramatta RSL sub-Branch',start:'2026-11-11',end:'2026-11-11',venue:'',cat:'Community & Civic',url:SRC+'/whats-on/remembrance-day-service-city-parramatta-rsl-sub-branch',access:{animals:1}},
+ {id:'rsl-ep',title:'Remembrance Day Service, Epping RSL sub-Branch',start:'2026-11-11',end:'2026-11-11',venue:'',cat:'Community & Civic',url:SRC+'/whats-on/remembrance-day-service-epping-rsl-sub-branch',access:{wheelchair:1,animals:1}},
+ {id:'diwali',title:'Diwali Festival of Lights',start:'2026-11-14',end:'2026-11-14',venue:'',cost:'Free',cat:'Festivals & Major Events',url:SRC+'/whats-on/diwali-festival-lights',access:{}},
+ {id:'lebanese',title:'Lebanese Festival',start:'2026-11-22',end:'2026-11-22',time:'11am to 4pm',venue:'Barton Park, North Parramatta',cat:'Festivals & Major Events',url:SRC+'/whats-on/lebanese-festival',
+   note:"Parramatta's first Lebanese Festival, with food, market stalls, live music, a cooking demonstration and family activities. Access and transport details are promised closer to the event.",access:{}},
+ {id:'xmas-market',title:'Parramatta Christmas Market',start:'2026-12-17',end:'2026-12-22',venue:'',cat:'Markets & Shopping',url:SRC+'/whats-on',access:{}},
+ {id:'wsw',title:'Western Sydney Wanderers vs Newcastle Jets (Round 10)',start:'2026-12-26',end:'2026-12-26',venue:'CommBank Stadium',cat:'Sports',url:SRC+'/whats-on',access:{}},
+ {id:'tree',title:'Christmas Tree Lighting Ceremony & Christmas Markets',venue:'',cat:'Festivals & Major Events',url:SRC+'/whats-on/christmas-tree-lighting-ceremony-christmas-markets',access:{}},
+ {id:'carols',title:'Christmas Carols in Parramatta Park',venue:'Parramatta Park',cat:'Concerts, Theatre & Music',url:SRC+'/whats-on/christmas-carols-parramatta-park',access:{}},
+ {id:'epping',title:'Epping Night Market',venue:'',cat:'Markets & Shopping',url:SRC+'/whats-on/epping-night-market',access:{}}
+];
+
+/* DUMMY venue plans. Invented to show the feature. They are not real venue plans and the facilities may not exist. */
+var TYPES = {
+  entrance:['E','Entrance','#034F84'], ramp:['R','Ramp','#0E7A55'], lift:['L','Lift','#0E7A55'], parking:['P','Accessible parking','#0E7A55'],
+  wc:['WC','Toilets','#5B4B9A'], accwc:['A','Accessible toilet','#0E7A55'], changing:['CP','Changing Places bathroom','#0E7A55'],
+  firstaid:['+','First aid','#B03A3A'], quiet:['Q','Quiet space','#5B4B9A'], hearing:['H','Hearing support point','#0E7A55'],
+  water:['W','Water refill','#034F84'], transit:['T','Bus or light rail stop','#034F84'], rest:['S','Seating and rest','#5B4B9A']
+};
+var LAYOUTS = {
+  lebanese:{
+    shapes:[
+      {x:2,y:2,w:96,h:66,fill:'var(--park)',r:3},
+      {x:62,y:6,w:34,h:14,fill:'#FFC93C',label:'Main stage'},
+      {x:6,y:24,w:40,h:8,fill:'#F6C5C5',label:'Food stalls'},
+      {x:6,y:36,w:40,h:8,fill:'#CFC2F7',label:'Market stalls'},
+      {x:52,y:28,w:20,h:12,fill:'#8FE3C2',label:'Cooking demo'},
+      {x:76,y:28,w:20,h:14,fill:'#92A8D1',label:'Family zone'}
+    ],
+    pois:[
+      {t:'entrance',x:10,y:64,label:'Main entrance',desc:'Step-free gate level with the footpath.'},
+      {t:'ramp',x:18,y:59,label:'Ramp to the lawn',desc:'Gentle ramp from the footpath onto the festival ground.'},
+      {t:'parking',x:5,y:50,label:'Accessible parking and drop-off',desc:'Set-down area next to the entrance.'},
+      {t:'transit',x:25,y:65,label:'Bus stop',desc:'Nearest public transport stop.'},
+      {t:'wc',x:90,y:56,label:'Toilets',desc:'Standard toilets at the east side.'},
+      {t:'accwc',x:84,y:56,label:'Accessible toilet',desc:'Next to the standard toilets.'},
+      {t:'changing',x:78,y:56,label:'Changing Places bathroom',desc:'Adult-size changing bench and hoist.'},
+      {t:'firstaid',x:50,y:57,label:'First aid',desc:'Staffed first aid tent.'},
+      {t:'quiet',x:14,y:12,label:'Quiet space',desc:'Away from the stage for a break from noise.'},
+      {t:'hearing',x:66,y:24,label:'Auslan viewing area',desc:'Reserved spot with a clear view of the interpreter and stage.'},
+      {t:'water',x:47,y:48,label:'Water refill',desc:'Free refill point.'},
+      {t:'rest',x:30,y:16,label:'Seating and shade',desc:'Shaded seats and a rest area.'}
+    ]
+  },
+  powerhouse:{
+    shapes:[
+      {x:4,y:4,w:92,h:62,fill:'var(--tint)',r:2},
+      {x:6,y:6,w:44,h:34,fill:'#CFC2F7',label:'Exhibition hall'},
+      {x:52,y:6,w:42,h:16,fill:'#FFC93C',label:'Exhibition hall 2'},
+      {x:52,y:25,w:24,h:15,fill:'#8FE3C2',label:'Workshops'},
+      {x:78,y:25,w:16,h:15,fill:'#F6C5C5',label:'Cafe'},
+      {x:6,y:43,w:88,h:21,fill:'#E6ECF6',label:'Foyer'}
+    ],
+    pois:[
+      {t:'entrance',x:50,y:67,label:'Main entrance',desc:'Wide automatic doors.'},
+      {t:'ramp',x:38,y:67,label:'Ramp',desc:'Ramp beside the steps.'},
+      {t:'parking',x:92,y:67,label:'Accessible parking',desc:'Bays close to the entrance.'},
+      {t:'transit',x:8,y:67,label:'Light rail and bus stop',desc:'Nearest public transport stop.'},
+      {t:'lift',x:47,y:42,label:'Lift',desc:'Connects the foyer with the upper levels.'},
+      {t:'wc',x:88,y:54,label:'Toilets',desc:'Standard toilets off the foyer.'},
+      {t:'accwc',x:82,y:54,label:'Accessible toilet',desc:'Next to the standard toilets.'},
+      {t:'changing',x:76,y:54,label:'Changing Places bathroom',desc:'Adult-size changing bench and hoist.'},
+      {t:'hearing',x:58,y:54,label:'Information desk with hearing loop',desc:'Ask here for Auslan and caption details.'},
+      {t:'quiet',x:14,y:30,label:'Quiet room',desc:'Low-light room for a break.'},
+      {t:'firstaid',x:30,y:54,label:'First aid',desc:'Staffed during opening hours.'},
+      {t:'water',x:67,y:50,label:'Water refill',desc:'Free refill point.'},
+      {t:'rest',x:20,y:54,label:'Seating',desc:'Benches in the foyer.'}
+    ]
+  }
+};
+/* Original illustrations drawn for the Poster look (no outside images can load in this viewer). */
+var INK = '#1B1340';
+function S(w){ return ' stroke="' + INK + '" stroke-width="' + (w || 2.5) + '"'; }
+function artSvg(cat){
+  var g = '', i, x;
+  if(cat === 'Markets & Shopping' || cat === 'Food & Drink'){
+    var awn = cat === 'Food & Drink' ? '#5AD6A4' : '#FF5A4E';
+    for(i = 0; i < 3; i++){ x = 18 + i * 92;
+      g += '<path d="M' + x + ' 44 L' + (x + 8) + ' 24 H' + (x + 66) + ' L' + (x + 74) + ' 44 Z" fill="' + awn + '"' + S() + '></path><path d="M' + (x + 22) + ' 24 L' + (x + 20) + ' 44 M' + (x + 52) + ' 24 L' + (x + 54) + ' 44" fill="none"' + S(5) + ' stroke="#fff"></path>' +
+        '<rect x="' + (x + 6) + '" y="44" width="62" height="30" fill="#fff"' + S() + '></rect><circle cx="' + (x + 22) + '" cy="58" r="7" fill="#FFC93C"' + S(2) + '></circle><circle cx="' + (x + 42) + '" cy="58" r="7" fill="#B9A6FF"' + S(2) + '></circle>';
+    }
+  } else if(cat === 'Concerts, Theatre & Music'){
+    for(i = 0; i < 4; i++){ x = 36 + i * 66; var y = 62 - (i % 2) * 12;
+      g += '<path d="M' + (x + 8) + ' ' + y + ' V' + (y - 34) + ' L' + (x + 26) + ' ' + (y - 28) + '" fill="none"' + S(4) + '></path><circle cx="' + x + '" cy="' + (y + 2) + '" r="9" fill="' + (i % 2 ? '#FF5A4E' : '#fff') + '"' + S() + '></circle>';
+    }
+    g += '<path d="M0 78 H300" stroke="' + INK + '" stroke-width="4"></path>';
+  } else if(cat === 'Family & Kids'){
+    for(i = 0; i < 3; i++){ x = 24 + i * 70;
+      g += '<rect x="' + (x + 12) + '" y="50" width="8" height="26" fill="#7A4B2A"' + S(2) + '></rect><circle cx="' + (x + 16) + '" cy="40" r="22" fill="' + (i === 1 ? '#5AD6A4' : '#8FE3C2') + '"' + S() + '></circle>';
+    }
+    g += '<path d="M238 8 L258 30 L238 52 L218 30 Z" fill="#FF5A4E"' + S() + '></path><path d="M238 52 C228 62 248 66 238 78 C230 86 246 86 240 90" fill="none"' + S(2) + '></path>';
+  } else if(cat === 'Festivals & Major Events'){
+    for(i = 0; i < 5; i++){ x = 30 + i * 60;
+      g += '<path d="M' + x + ' 0 V' + (14 + (i % 2) * 8) + '" fill="none"' + S(2) + '></path><ellipse cx="' + x + '" cy="' + (34 + (i % 2) * 8) + '" rx="15" ry="20" fill="' + ['#FF5A4E', '#FFC93C', '#5AD6A4', '#B9A6FF', '#FF5A4E'][i] + '"' + S() + '></ellipse><path d="M' + (x - 8) + ' ' + (34 + (i % 2) * 8) + ' H' + (x + 8) + '" stroke="' + INK + '" stroke-width="2"></path>';
+    }
+  } else if(cat === 'Sports'){
+    g += '<circle cx="80" cy="46" r="30" fill="#fff"' + S() + '></circle><path d="M80 30 L94 40 L89 57 H71 L66 40 Z" fill="' + INK + '"></path><path d="M180 78 V28 H270 V78" fill="none"' + S(5) + '></path><path d="M180 28 L270 78 M270 28 L180 78" fill="none"' + S(1.5) + ' opacity=".5"></path>';
+  } else if(cat === 'Arts, Culture & Heritage'){
+    for(i = 0; i < 3; i++){ x = 24 + i * 90;
+      g += '<rect x="' + x + '" y="14" width="64" height="56" fill="#fff"' + S() + '></rect><rect x="' + (x + 8) + '" y="22" width="48" height="40" fill="' + ['#FF5A4E', '#6EC1FF', '#FFC93C'][i] + '"></rect><circle cx="' + (x + 32) + '" cy="42" r="' + (8 + i * 3) + '" fill="#fff"' + S(2) + '></circle>';
+    }
+  } else if(cat === 'Community & Civic'){
+    for(i = 0; i < 6; i++){ x = 28 + i * 46;
+      g += '<circle cx="' + x + '" cy="34" r="11" fill="#fff"' + S() + '></circle><path d="M' + (x - 15) + ' 78 C' + (x - 15) + ' 54 ' + (x + 15) + ' 54 ' + (x + 15) + ' 78 Z" fill="' + ['#FF5A4E', '#FFC93C', '#5AD6A4', '#6EC1FF', '#B9A6FF', '#FF5A4E'][i] + '"' + S() + '></path>';
+    }
+  } else {
+    for(i = 0; i < 12; i++){ x = 12 + i * 24;
+      g += '<rect x="' + x + '" y="' + (14 + (i * 23) % 56) + '" width="10" height="10" rx="2" fill="' + ['#FF5A4E', '#FFC93C', '#5AD6A4', '#fff', '#6EC1FF'][i % 5] + '"' + S(2) + ' transform="rotate(' + (i * 31) + ' ' + (x + 5) + ' ' + (19 + (i * 23) % 56) + ')"></rect>';
+    }
+  }
+  return '<svg viewBox="0 0 300 90" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">' + g + '</svg>';
+}
+var evState = {id:null, sel:null, off:{}};
+function mapsLink(e){
+  if(!e.venue) return '';
+  var q = e.venue + (/Parramatta/i.test(e.venue) ? '' : ' Parramatta') + ' NSW';
+  return ' <a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) + '" target="_blank" rel="noopener">Open in Google Maps</a>';
+}
+var I18N = {
+ en:{nav_visitors:'Visitors',nav_managers:'Event managers',nav_council:'Council',language:'Language',h1:'Find events that work for you.',sub:'Real listings from At Parramatta, with the access details visitors keep asking for.',needs:'What do you need?',n_wheel:'Wheelchair access',n_hear:'Hearing support',n_animal:'Service animals welcome',n_free:'Free',search:'Search events',confirmed:'Only show events that match my needs',not_listed:'Not listed',event_page:'Event page',showing:'Showing'},
+ zh:{nav_visitors:'访客',nav_managers:'活动组织者',nav_council:'市议会',language:'语言',h1:'找到适合你的活动。',sub:'来自 At Parramatta 的真实活动列表，并附上访客常问的无障碍信息。',needs:'你需要什么？',n_wheel:'轮椅通道',n_hear:'听障支持',n_animal:'欢迎服务犬',n_free:'免费',search:'搜索活动',confirmed:'仅显示符合我需求的活动',not_listed:'暂未列出',event_page:'活动页面',showing:'显示'},
+ ar:{nav_visitors:'الزوار',nav_managers:'منظمو الفعاليات',nav_council:'المجلس البلدي',language:'اللغة',h1:'اعثر على فعاليات تناسبك.',sub:'قوائم حقيقية من At Parramatta، مع تفاصيل إمكانية الوصول التي يسأل عنها الزوار دائمًا.',needs:'ماذا تحتاج؟',n_wheel:'إمكانية وصول الكراسي المتحركة',n_hear:'دعم ضعاف السمع',n_animal:'يُسمح بالحيوانات المساعدة',n_free:'مجاني',search:'ابحث عن الفعاليات',confirmed:'عرض الفعاليات المناسبة لاحتياجاتي فقط',not_listed:'غير مدرج بعد',event_page:'صفحة الفعالية',showing:'عرض'},
+ hi:{nav_visitors:'आगंतुक',nav_managers:'इवेंट मैनेजर',nav_council:'काउंसिल',language:'भाषा',h1:'अपने लिए सही इवेंट खोजें।',sub:'At Parramatta से असली सूचियाँ, और वे एक्सेसिबिलिटी जानकारियाँ जो आगंतुक अक्सर पूछते हैं।',needs:'आपको क्या चाहिए?',n_wheel:'व्हीलचेयर पहुँच',n_hear:'सुनने में सहायता',n_animal:'सेवा पशु का स्वागत',n_free:'निःशुल्क',search:'इवेंट खोजें',confirmed:'केवल मेरी ज़रूरतों से मेल खाते इवेंट दिखाएँ',not_listed:'अभी सूचीबद्ध नहीं',event_page:'इवेंट पेज',showing:'दिखा रहे हैं'}
+};
+var lang = 'en';
+function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k; }
+
+/* storage with fallback */
+var mem = {};
+function load(k, d){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return mem[k] !== undefined ? mem[k] : d; } }
+function save(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){ mem[k] = v; } }
+
+var profile = load('pe_profile', {age:'', needs:{}});
+var feedback = load('pe_feedback', []);
+var userEvents = load('pe_events', []);
+var manager = null;
+var openIds = {};
+
+function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function $(id){ return document.getElementById(id); }
+function allEvents(){ return EVENTS.concat(userEvents); }
+function todayStr(){ var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function status(e){
+  if(!e.start) return 'tbc';
+  var td = todayStr(), end = e.end || e.start;
+  if(end < td) return 'ended';
+  if(e.start <= td) return 'now';
+  return 'soon';
+}
+var fmt = new Intl.DateTimeFormat('en-AU',{day:'numeric',month:'short',year:'numeric'});
+function d(s){ var p = s.split('-'); return fmt.format(new Date(+p[0], +p[1]-1, +p[2])); }
+function dates(e){
+  if(!e.start) return 'Dates not listed. See the event page.';
+  if(!e.end || e.end === e.start) return d(e.start);
+  return d(e.start) + ' to ' + d(e.end);
+}
+function hearing(e){ return !!(e.access.auslan || e.access.loop || e.access.captions); }
+function matches(e){
+  var n = profile.needs, ok = true;
+  if(n.wheelchair && !e.access.wheelchair) ok = false;
+  if(n.hearing && !hearing(e)) ok = false;
+  if(n.animals && !e.access.animals) ok = false;
+  if(n.kids && e.cat !== 'Family & Kids') ok = false;
+  if(n.free && !(e.cost && e.cost.indexOf('Free') === 0)) ok = false;
+  return ok;
+}
+function anyNeed(){ var n = profile.needs; return !!(n.wheelchair||n.hearing||n.animals||n.kids||n.free); }
+
+/* ---------- visitor list ---------- */
+var STAT = {ended:['Ended','#E6ECF6'],now:['On now','#8FE3C2'],soon:['Upcoming','#FFFFFF'],tbc:['Dates to confirm','#FFFFFF']};
+var ui = {view:'list', when:'all', month:null, day:null, venue:null};
+var WHEN = [['today','Today',0],['7','Next 7 days',7],['15','Next 15 days',15],['30','Next month',30],['all','All dates',null]];
+var VENUES = [
+  {key:'square',name:'Parramatta Square',lat:-33.8150,lon:151.0034,side:'l',test:/Parramatta Square/i},
+  {key:'powerhouse',name:'Powerhouse Parramatta',lat:-33.8130,lon:151.0046,side:'r',test:/Powerhouse/i},
+  {key:'park',name:'Parramatta Park',lat:-33.8105,lon:150.9995,side:'l',test:/Parramatta Park/i},
+  {key:'stadium',name:'CommBank Stadium',lat:-33.8075,lon:150.9900,side:'r',test:/CommBank Stadium/i},
+  {key:'barton',name:'North Parramatta (Barton Park)',lat:-33.7975,lon:151.0150,side:'l',test:/Barton Park/i}
+];
+var MAP = {lat0:-33.788, lat1:-33.822, lon0:150.984, lon1:151.024};
+function fromStr(s){ var p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+function toStr(dt){ return dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0'); }
+function addDays(s, n){ var dt = fromStr(s); dt.setDate(dt.getDate() + n); return toStr(dt); }
+function rangeEnd(){ var w = WHEN.filter(function(x){ return x[0] === ui.when; })[0]; return w[2] === null ? null : addDays(todayStr(), w[2]); }
+function inRange(e){
+  var re = rangeEnd(); if(re === null) return true;
+  if(!e.start) return false;
+  return (e.end || e.start) >= todayStr() && e.start <= re;
+}
+function venueFor(e){ for(var i = 0; i < VENUES.length; i++){ if(VENUES[i].test.test(e.venue || '')) return VENUES[i]; } return null; }
+function filterEvents(useRange, forceEnded){
+  var q = $('q').value.trim().toLowerCase(), cat = $('cat').value;
+  var confirmedOnly = $('confirmed').checked, withEnded = $('ended').checked || !!forceEnded, need = anyNeed();
+  var list = allEvents().filter(function(e){
+    if(useRange && !inRange(e)) return false;
+    if(!withEnded && status(e) === 'ended') return false;
+    if(cat && e.cat !== cat) return false;
+    if(q && (e.title + ' ' + e.venue + ' ' + e.cat).toLowerCase().indexOf(q) === -1) return false;
+    if(confirmedOnly && need && !matches(e)) return false;
+    return true;
+  });
+  list.sort(function(a,b){
+    if(need){ var ma = matches(a), mb = matches(b); if(ma !== mb) return ma ? -1 : 1; }
+    var sa = a.start || '9999', sb = b.start || '9999';
+    return sa < sb ? -1 : sa > sb ? 1 : 0;
+  });
+  return list;
+}
+function setCount(n){ $('count').textContent = t('showing') + ' ' + n + ' / ' + allEvents().length; }
+function renderList(){
+  var list = filterEvents(true);
+  setCount(list.length);
+  if(!list.length){
+    $('grid').innerHTML = '<div class="empty" style="grid-column:1/-1">No events match. Try a wider date range, clear a need, switch off "only show events that match", or include ended events.</div>';
+    return;
+  }
+  $('grid').innerHTML = list.map(card).join('');
+}
+function row(e){
+  var listed = ACCESS.filter(function(a){ return e.access[a[0]]; }).length;
+  return '<div class="row"><strong>' + esc(e.title) + '</strong><span class="fine">' + esc(dates(e)) + (e.time ? ', ' + esc(e.time) : '') + (e.venue ? ' · ' + esc(e.venue) : '') + (e.cost ? ' · ' + esc(e.cost) : '') + '</span>' +
+    '<span class="fine">' + listed + ' of ' + ACCESS.length + ' access details listed</span>' + sourceLine(e, listed < ACCESS.length) + '</div>';
+}
+function renderMap(){
+  var list = filterEvents(true), placed = {}, unplaced = [];
+  list.forEach(function(e){ var v = venueFor(e); if(v){ (placed[v.key] = placed[v.key] || []).push(e); } else unplaced.push(e); });
+  var keys = VENUES.filter(function(v){ return placed[v.key]; }).map(function(v){ return v.key; });
+  if(keys.indexOf(ui.venue) === -1) ui.venue = keys[0] || null;
+  setCount(list.length);
+  $('pins').innerHTML = VENUES.filter(function(v){ return placed[v.key]; }).map(function(v){
+    var x = (v.lon - MAP.lon0) / (MAP.lon1 - MAP.lon0) * 100, y = (MAP.lat0 - v.lat) / (MAP.lat0 - MAP.lat1) * 100;
+    return '<button type="button" class="pin ' + v.side + (ui.venue === v.key ? ' sel' : '') + '" style="left:' + x.toFixed(1) + '%;top:' + y.toFixed(1) + '%" data-venue="' + v.key + '" aria-label="' + esc(v.name) + ', ' + placed[v.key].length + (placed[v.key].length === 1 ? ' event' : ' events') + '"><b>' + placed[v.key].length + '</b><span>' + esc(v.name) + '</span></button>';
+  }).join('');
+  var sel = VENUES.filter(function(v){ return v.key === ui.venue; })[0];
+  $('map-panel').innerHTML = sel
+    ? '<h3 style="font-size:19px">At ' + esc(sel.name) + '</h3><p class="fine"><a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sel.name.replace(/ \(.*\)/, '') + ' Parramatta NSW') + '" target="_blank" rel="noopener">Open in Google Maps</a></p>' + placed[sel.key].map(row).join('')
+    : '<div class="empty">No events with a known venue in this range. Try a wider range.</div>';
+  $('map-unplaced').innerHTML = unplaced.length
+    ? '<h3 style="font-size:17px;margin-bottom:8px">Not on the map (' + unplaced.length + ')</h3><p class="fine" style="margin-bottom:8px">The listing does not give a venue I can place, or the venue is outside this map.</p><div class="rows">' + unplaced.map(row).join('') + '</div>'
+    : '';
+}
+function renderCal(){
+  var list = filterEvents(false, true);
+  var td = todayStr(), re = rangeEnd();
+  if(!ui.month){ var n = new Date(); ui.month = {y:n.getFullYear(), m:n.getMonth()}; }
+  var y = ui.month.y, m = ui.month.m;
+  var first = new Date(y, m, 1), offset = (first.getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
+  $('cal-title').textContent = new Intl.DateTimeFormat('en-AU',{month:'long',year:'numeric'}).format(first);
+  var html = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(function(w){ return '<div class="wd">' + w + '</div>'; }).join('');
+  for(var i = 0; i < offset; i++) html += '<div class="cal-day empty"></div>';
+  for(var dd = 1; dd <= days; dd++){
+    var ds = y + '-' + String(m + 1).padStart(2,'0') + '-' + String(dd).padStart(2,'0');
+    var evs = list.filter(function(e){ return e.start && e.start <= ds && (e.end || e.start) >= ds; });
+    evs.sort(function(a,b){ return (fromStr(a.end || a.start) - fromStr(a.start)) - (fromStr(b.end || b.start) - fromStr(b.start)); });
+    var cls = 'cal-day' + (ds === td ? ' today' : '') + (re !== null && ds >= td && ds <= re ? ' in' : '') + (ui.day === ds ? ' sel' : '');
+    html += '<button type="button" class="' + cls + '" data-day="' + ds + '" aria-label="' + esc(d(ds)) + ', ' + evs.length + ' events"><span class="n">' + dd + '</span>' +
+      evs.slice(0,2).map(function(e){ return '<span class="ev" style="background:' + (COLORS[e.cat] || '#E6ECF6') + '">' + esc(e.title) + '</span>'; }).join('') +
+      (evs.length > 2 ? '<span class="more">+' + (evs.length - 2) + ' more</span>' : '') + (evs.length ? '<span class="dot">' + evs.length + '</span>' : '') + '</button>';
+  }
+  $('cal').innerHTML = html;
+  if(!ui.day || ui.day.slice(0,7) !== y + '-' + String(m + 1).padStart(2,'0')) ui.day = (td.slice(0,7) === y + '-' + String(m + 1).padStart(2,'0')) ? td : y + '-' + String(m + 1).padStart(2,'0') + '-01';
+  var dayEvs = list.filter(function(e){ return e.start && e.start <= ui.day && (e.end || e.start) >= ui.day; });
+  $('cal-day-title').textContent = d(ui.day) + ': ' + dayEvs.length + (dayEvs.length === 1 ? ' event' : ' events');
+  $('cal-day-list').innerHTML = dayEvs.length ? dayEvs.map(row).join('') : '<div class="empty">No events listed for this day.</div>';
+  var undated = list.filter(function(e){ return !e.start; }).length;
+  $('cal-note').textContent = (re !== null ? 'Shaded days are inside the selected range. ' : '') + (undated ? undated + ' events have no dates on At Parramatta and are not on the calendar.' : '');
+  var shown = 0; list.forEach(function(e){ if(e.start) shown++; });
+  setCount(shown);
+}
+function render(){
+  document.querySelectorAll('#view-seg button').forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-view') === ui.view); });
+  document.querySelectorAll('#when-seg button').forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-when') === ui.when); });
+  $('v-list').hidden = ui.view !== 'list'; $('v-map').hidden = ui.view !== 'map'; $('v-cal').hidden = ui.view !== 'cal';
+  var re = rangeEnd(), hidden = allEvents().filter(function(e){ return !e.start; }).length;
+  $('range-note').textContent = re === null ? '' : 'Showing events running between ' + d(todayStr()) + ' and ' + d(re) + '.' + (hidden ? ' ' + hidden + ' events with no dates are hidden. Choose All dates to see them.' : '');
+  if(ui.view === 'list') renderList(); else if(ui.view === 'map') renderMap(); else renderCal();
+}
+function card(e){
+  var st = STAT[status(e)], listed = ACCESS.filter(function(a){ return e.access[a[0]]; });
+  var miss = need_missing(e);
+  var chips = listed.length
+    ? listed.map(function(a){ return '<span class="tag yes">' + esc(a[1]) + '</span>'; }).join('')
+    : '<span class="tag gap">' + esc(t('not_listed')) + ': access details</span>';
+  if(miss) chips += '<span class="tag gap">' + esc(miss) + '</span>';
+  var meta = ['<span>' + esc(dates(e)) + (e.time ? ', ' + esc(e.time) : '') + '</span>'];
+  meta.push('<span>' + (e.venue ? esc(e.venue) + mapsLink(e) : 'Venue: see the event page') + '</span>');
+  var costTag = e.cost ? '<span class="tag cost">' + esc(e.cost) + '</span>' : '';
+  var dim = anyNeed() && !matches(e) ? ' dim' : '';
+  var own = e.user ? '<span class="tag cost">Your demo listing</span>' : '';
+  return '<article class="card' + dim + '" data-id="' + esc(e.id) + '">' +
+    '<div class="card-top" style="background:' + (COLORS[e.cat] || '#E6ECF6') + '"><span>' + esc(e.cat) + '</span><span class="pill" style="background:' + st[1] + '">' + st[0] + '</span></div>' +
+    (e.img ? '<img class="evimg" alt="Image supplied by the event manager" src="' + esc(e.img) + '">' : '<div class="art" style="background:' + (COLORS[e.cat] || '#E6ECF6') + '" aria-hidden="true">' + artSvg(e.cat) + '</div>') +
+    '<div class="card-body"><h3>' + esc(e.title) + '</h3><div class="meta">' + meta.join('') + '</div>' +
+    (e.note ? '<p class="fine">' + esc(e.note) + '</p>' : '') +
+    '<div class="chips">' + costTag + own + chips + '</div>' +
+    (LAYOUTS[e.id] ? '<a class="btn ghost small" style="align-self:flex-start;text-decoration:none" href="#event-' + esc(e.id) + '">Venue plan (dummy)</a>' : '') +
+    '<details class="more" data-id="' + esc(e.id) + '"' + (openIds[e.id] ? ' open' : '') + '><summary>Access, reviews and issues</summary>' + detailBody(e) + '</details>' +
+    sourceLine(e, listedCount(e) < ACCESS.length) + '</div></article>';
+}
+function listedCount(e){ return ACCESS.filter(function(a){ return e.access[a[0]]; }).length; }
+function sourceLine(e, gaps){
+  if(e.user) return '<p class="fine">Added by an event manager in this demo.</p>';
+  var link = '<a href="' + esc(e.url) + '" target="_blank" rel="noopener">';
+  return '<p class="fine">' + (gaps
+    ? 'Some access details are not listed. Check with the organiser on the ' + link + 'event page</a> before you go. Source: At Parramatta.'
+    : 'Book or confirm on the ' + link + 'official event page</a>. Source: At Parramatta.') + '</p>';
+}
+function need_missing(e){
+  if(!anyNeed() || matches(e)) return '';
+  return 'Your needs: not listed';
+}
+function detailBody(e){
+  var rows = ACCESS.map(function(a){
+    var yes = !!e.access[a[0]];
+    return '<dt>' + esc(a[1]) + '</dt><dd><span class="' + (yes ? 'y' : 'n') + '">' + (yes ? 'Listed' : esc(t('not_listed'))) + '</span></dd>';
+  }).join('');
+  var extra = '';
+  if(e.parkingNote) extra += '<p class="fine"><b>Parking:</b> ' + esc(e.parkingNote) + '</p>';
+  if(e.transitNote) extra += '<p class="fine"><b>Getting there:</b> ' + esc(e.transitNote) + '</p>';
+  var social = e.social ? '<a href="' + esc(e.social) + '" target="_blank" rel="noopener">Event social media</a>' : '<span class="fine">Social media: the organiser has not added a link.</span>';
+  var fbs = feedback.filter(function(f){ return f.eventId === e.id; });
+  var list = fbs.length ? fbs.map(fbHtml).join('') : '<div class="fine">No reviews or reports for this event in this browser yet.</div>';
+  var id = esc(e.id);
+  return '<dl class="dl">' + rows + '</dl>' + extra +
+    '<p class="fine">Parking, transport and toilet details: see Getting there below the list when an event does not list its own.</p>' + social +
+    '<div class="sub"><h4>Rate and review</h4>' +
+    '<fieldset class="stars"><legend>Stars</legend>' + [1,2,3,4,5].map(function(n){ return '<label><input type="radio" name="st-' + id + '" value="' + n + '"' + (n===5?' checked':'') + '>' + n + ' ★</label>'; }).join('') + '</fieldset>' +
+    '<div class="field"><label for="rt-' + id + '">Your feedback</label><textarea id="rt-' + id + '"></textarea></div>' +
+    '<div class="field"><label for="rv-' + id + '">Who can read it?</label><select id="rv-' + id + '"><option value="public">Everyone</option><option value="managers">Event managers only</option></select></div>' +
+    '<button class="btn small" type="button" data-act="review" data-id="' + id + '">Send review</button></div>' +
+    '<div class="sub"><h4>Report an issue to the organiser</h4>' +
+    '<div class="field"><label for="ct-' + id + '">Type</label><select id="ct-' + id + '"><option>Trash</option><option>Big spill</option><option>Other</option></select></div>' +
+    '<div class="field"><label for="cd-' + id + '">What happened and where?</label><textarea id="cd-' + id + '"></textarea></div>' +
+    '<button class="btn small" type="button" data-act="complaint" data-id="' + id + '">Send to organiser</button></div>' +
+    '<div class="sub"><h4>In this browser</h4>' + list + '<p class="fine">Prototype: nothing is sent to a server.</p></div>';
+}
+function fbHtml(f){
+  var who = f.kind === 'complaint' ? 'Issue: ' + esc(f.type) : esc(f.stars) + ' of 5 stars';
+  var vis = f.kind === 'complaint' ? 'Sent to organiser' : (f.visibility === 'managers' ? 'Event managers only' : 'Public');
+  return '<div class="fb"><b>' + who + '</b><span>' + esc(f.text || 'No comment') + '</span><span class="fine">' + vis + '</span></div>';
+}
+
+/* ---------- profile ---------- */
+function syncProfileUI(){
+  $('age').value = profile.age || '';
+  ['wheelchair','hearing','animals','kids','free'].forEach(function(k){ $('n-' + k).checked = !!profile.needs[k]; });
+}
+function readProfile(){
+  profile.age = $('age').value;
+  ['wheelchair','hearing','animals','kids','free'].forEach(function(k){ profile.needs[k] = $('n-' + k).checked; });
+  save('pe_profile', profile); render(); renderCouncil();
+}
+
+/* ---------- manager ---------- */
+function renderManager(){
+  $('mgr-login').hidden = !!manager; $('mgr-dash').hidden = !manager;
+  if(!manager) return;
+  $('m-who').textContent = manager.org ? manager.org + ' · ' + manager.email : manager.email;
+  var mine = userEvents.map(function(e){ return e.id; });
+  var fbs = feedback.filter(function(f){ return mine.indexOf(f.eventId) !== -1; });
+  $('m-feedback').innerHTML = fbs.length ? fbs.map(function(f){
+    var ev = userEvents.filter(function(e){ return e.id === f.eventId; })[0];
+    return '<div class="fb" style="margin-bottom:8px"><b>' + esc(ev ? ev.title : '') + '</b>' + fbHtml(f).replace('<div class="fb">','<div>').replace(/<\/div>$/,'</div>') + '</div>';
+  }).join('') : '<div class="empty">Nothing yet. Add an event, then open it in the Visitors tab and send a review or issue to see it arrive here.</div>';
+  $('m-listings').innerHTML = userEvents.length ? userEvents.map(function(e){
+    return '<div class="fb" style="margin-bottom:8px;flex-direction:row;justify-content:space-between;align-items:center;gap:10px"><span>' + esc(e.title) + '</span><button class="btn ghost small" type="button" data-act="del" data-id="' + esc(e.id) + '">Delete</button></div>';
+  }).join('') : '<div class="fine">No demo listings yet.</div>';
+}
+
+/* ---------- council ---------- */
+function renderCouncil(){
+  var src = EVENTS, n = src.length;
+  $('gap-intro').textContent = 'How many of the ' + n + ' listings read from At Parramatta publish each detail.';
+  $('gap-bars').innerHTML = ACCESS.map(function(a){
+    var c = src.filter(function(e){ return e.access[a[0]]; }).length;
+    return '<div class="bar-row"><span>' + esc(a[1]) + '</span><div class="bar" role="img" aria-label="' + c + ' of ' + n + '"><i style="width:' + Math.round(c / n * 100) + '%"></i></div><b>' + c + '/' + n + '</b></div>';
+  }).join('');
+  var needs = Object.keys(profile.needs).filter(function(k){ return profile.needs[k]; });
+  var names = {wheelchair:'Wheelchair access',hearing:'Hearing support',animals:'Service animals',kids:'Family and kids',free:'Free events'};
+  $('seg').innerHTML = '<table><tbody>' +
+    '<tr><th scope="row">Age group</th><td>' + esc(profile.age || 'Not shared') + '</td></tr>' +
+    '<tr><th scope="row">Needs selected</th><td>' + (needs.length ? needs.map(function(k){ return esc(names[k]); }).join(', ') : 'None') + '</td></tr>' +
+    '<tr><th scope="row">Reviews</th><td>' + feedback.filter(function(f){ return f.kind === 'review'; }).length + '</td></tr>' +
+    '<tr><th scope="row">Issues reported</th><td>' + feedback.filter(function(f){ return f.kind === 'complaint'; }).length + '</td></tr></tbody></table>';
+  var rev = feedback.filter(function(f){ return f.kind === 'review'; });
+  var types = {Trash:0,'Big spill':0,Other:0};
+  feedback.forEach(function(f){ if(f.kind === 'complaint') types[f.type] = (types[f.type] || 0) + 1; });
+  var avg = rev.length ? (rev.reduce(function(s,f){ return s + f.stars; }, 0) / rev.length).toFixed(1) : null;
+  $('council-fb').innerHTML = feedback.length
+    ? '<div class="two"><div><h3 style="font-size:17px;margin-bottom:8px">Issues by type</h3><table><tbody>' + Object.keys(types).map(function(k){ return '<tr><th scope="row">' + esc(k) + '</th><td>' + types[k] + '</td></tr>'; }).join('') + '</tbody></table></div><div><h3 style="font-size:17px;margin-bottom:8px">Reviews</h3><p>' + rev.length + ' review' + (rev.length === 1 ? '' : 's') + (avg ? ', average ' + avg + ' of 5 stars' : '') + '.</p></div></div>'
+    : '<div class="empty">No feedback yet. Open an event in the Visitors tab, send a review or report an issue, and it is counted here.</div>';
+}
+
+/* ---------- views & language ---------- */
+function renderEventPage(id){
+  var e = allEvents().filter(function(x){ return x.id === id; })[0], root = $('ev-page');
+  if(!e){ root.innerHTML = '<a href="#visitors" style="font-weight:600">Back to events</a><div class="empty">Event not found.</div>'; return; }
+  if(evState.id !== id) evState = {id:id, sel:null, off:{}};
+  var L = LAYOUTS[id];
+  var rows = ACCESS.map(function(a){
+    var yes = !!e.access[a[0]];
+    return '<dt>' + esc(a[1]) + '</dt><dd><span class="' + (yes ? 'y' : 'n') + '">' + (yes ? 'Listed' : esc(t('not_listed'))) + '</span></dd>';
+  }).join('');
+  var h = '<a href="#visitors" style="font-weight:600">Back to events</a>' +
+    '<h2 style="font-size:clamp(26px,4vw,38px)">' + esc(e.title) + '</h2>' +
+    '<p>' + esc(dates(e)) + (e.time ? ', ' + esc(e.time) : '') + (e.venue ? ' · ' + esc(e.venue) + mapsLink(e) : '') + (e.cost ? ' · ' + esc(e.cost) : '') + '</p>' +
+    (e.note ? '<p class="fine">' + esc(e.note) + '</p>' : '') +
+    (e.img ? '<img class="evimg" style="max-width:520px;border-radius:14px;height:auto" alt="Image supplied by the event manager" src="' + esc(e.img) + '">' : '');
+  if(L){
+    var present = {}; L.pois.forEach(function(p){ present[p.t] = 1; });
+    h += '<div class="dummy">Dummy venue plan. This layout is made up to show what the feature could look like. It is not the real venue plan, and the facilities shown may not exist. The access details further down come from At Parramatta.</div>' +
+      '<fieldset class="legend"><legend>Show on the plan</legend>' + Object.keys(TYPES).filter(function(k){ return present[k]; }).map(function(k){
+        return '<label class="check"><input type="checkbox" data-type="' + k + '" checked><span class="swatch" style="background:' + TYPES[k][2] + '">' + esc(TYPES[k][0]) + '</span><span>' + esc(TYPES[k][1]) + '</span></label>';
+      }).join('') + '</fieldset>' +
+      '<div class="plan"><svg viewBox="0 0 100 70" role="img" aria-label="Dummy plan of the venue">' + L.shapes.map(function(s){
+        return '<rect x="' + s.x + '" y="' + s.y + '" width="' + s.w + '" height="' + s.h + '" rx="' + (s.r || 1) + '" fill="' + s.fill + '"></rect>' +
+          (s.label ? '<text x="' + (s.x + s.w / 2) + '" y="' + (s.y + s.h / 2 + 0.8) + '" text-anchor="middle">' + esc(s.label) + '</text>' : '');
+      }).join('') + '</svg><div id="plan-pins"></div></div>' +
+      '<div id="poi-detail" class="fine" aria-live="polite"></div>' +
+      '<h3 style="font-size:19px">Facilities on this plan</h3><div class="rows" id="poi-list"></div>';
+  } else {
+    h += '<div class="empty">No venue plan for this event yet. An event manager can add one. Access details listed on At Parramatta are shown below.</div>';
+  }
+  h += '<h3 style="font-size:19px">Access details listed on At Parramatta</h3><dl class="dl" style="max-width:520px">' + rows + '</dl>' + sourceLine(e, listedCount(e) < ACCESS.length);
+  root.innerHTML = h;
+  if(L) renderPlan();
+}
+function renderPlan(){
+  var L = LAYOUTS[evState.id]; if(!L) return;
+  var vis = []; L.pois.forEach(function(p, i){ if(!evState.off[p.t]) vis.push(i); });
+  $('plan-pins').innerHTML = vis.map(function(i){
+    var p = L.pois[i], T = TYPES[p.t];
+    return '<button type="button" class="poi' + (evState.sel === i ? ' sel' : '') + '" data-poi="' + i + '" style="left:' + p.x + '%;top:' + (p.y / 70 * 100).toFixed(1) + '%;background:' + T[2] + '" aria-label="' + esc(p.label) + '">' + esc(T[0]) + '</button>';
+  }).join('');
+  $('poi-list').innerHTML = vis.map(function(i){
+    var p = L.pois[i], T = TYPES[p.t];
+    return '<div class="row" style="flex-direction:row;align-items:center;gap:12px"><span class="swatch" style="background:' + T[2] + '">' + esc(T[0]) + '</span><span><strong style="font-size:16px">' + esc(p.label) + '</strong><br><span class="fine">' + esc(p.desc) + '</span></span></div>';
+  }).join('') || '<div class="empty">Nothing selected. Tick a facility type above.</div>';
+  var s = L.pois[evState.sel];
+  $('poi-detail').innerHTML = s && !evState.off[s.t] ? '<strong style="font-size:15px;color:var(--ink)">' + esc(s.label) + '</strong>: ' + esc(s.desc) : 'Tap a marker for details.';
+}
+function showView(){
+  var h = (location.hash || '#visitors').slice(1);
+  var isEv = h.indexOf('event-') === 0;
+  if(!isEv && ['visitors','managers','council'].indexOf(h) === -1) h = 'visitors';
+  ['visitors','managers','council'].forEach(function(v){
+    $('view-' + v).hidden = isEv || v !== h;
+    var a = $('nav-' + v); if(!isEv && v === h) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  });
+  $('view-event').hidden = !isEv;
+  if(isEv){ renderEventPage(h.slice(6)); window.scrollTo(0, 0); }
+  if(h === 'council') renderCouncil();
+  if(h === 'managers') renderManager();
+}
+function applyLang(){
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(function(el){ el.textContent = t(el.getAttribute('data-i18n')); });
+  render();
+}
+
+/* ---------- wiring ---------- */
+function fillSelects(){
+  $('cat').innerHTML = '<option value="">All categories</option>' + CATS.map(function(c){ return '<option>' + esc(c) + '</option>'; }).join('');
+  $('e-cat').innerHTML = CATS.map(function(c){ return '<option>' + esc(c) + '</option>'; }).join('');
+  $('e-access').innerHTML = ACCESS.map(function(a){ return '<label class="check"><input type="checkbox" id="ea-' + a[0] + '"><span>' + esc(a[1]) + '</span></label>'; }).join('');
+}
+function init(){
+  fillSelects(); syncProfileUI();
+  $('lang').addEventListener('change', function(e){ lang = e.target.value; applyLang(); });
+  ['q','cat','confirmed','ended'].forEach(function(id){ $(id).addEventListener('input', render); $(id).addEventListener('change', render); });
+  $('age').addEventListener('change', readProfile);
+  $('ev-page').addEventListener('click', function(e){ var b = e.target.closest('button[data-poi]'); if(b){ evState.sel = +b.getAttribute('data-poi'); renderPlan(); } });
+  $('ev-page').addEventListener('change', function(e){ var c = e.target.closest('input[data-type]'); if(c){ evState.off[c.getAttribute('data-type')] = !c.checked; renderPlan(); } });
+  $('view-seg').addEventListener('click', function(e){ var b = e.target.closest('button[data-view]'); if(b){ ui.view = b.getAttribute('data-view'); render(); } });
+  $('when-seg').addEventListener('click', function(e){ var b = e.target.closest('button[data-when]'); if(b){ ui.when = b.getAttribute('data-when'); render(); } });
+  $('pins').addEventListener('click', function(e){ var b = e.target.closest('button[data-venue]'); if(b){ ui.venue = b.getAttribute('data-venue'); renderMap(); } });
+  $('cal').addEventListener('click', function(e){ var b = e.target.closest('button[data-day]'); if(b){ ui.day = b.getAttribute('data-day'); renderCal(); } });
+  $('v-cal').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-nav]'); if(!b) return;
+    var n = +b.getAttribute('data-nav'), now = new Date();
+    if(n === 0) ui.month = {y:now.getFullYear(), m:now.getMonth()};
+    else { var dt = new Date(ui.month.y, ui.month.m + n, 1); ui.month = {y:dt.getFullYear(), m:dt.getMonth()}; }
+    ui.day = null; renderCal();
+  });
+  ['wheelchair','hearing','animals','kids','free'].forEach(function(k){ $('n-' + k).addEventListener('change', readProfile); });
+
+  $('grid').addEventListener('toggle', function(e){
+    var el = e.target; if(el.tagName === 'DETAILS'){ openIds[el.getAttribute('data-id')] = el.open; }
+  }, true);
+  $('grid').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-act]'); if(!b) return;
+    var id = b.getAttribute('data-id'), act = b.getAttribute('data-act');
+    if(act === 'review'){
+      var st = document.querySelector('input[name="st-' + id + '"]:checked');
+      feedback.push({id:'f' + Date.now(), eventId:id, kind:'review', stars:st ? +st.value : 5, text:$('rt-' + id).value.trim(), visibility:$('rv-' + id).value});
+    } else if(act === 'complaint'){
+      var txt = $('cd-' + id).value.trim();
+      if(!txt){ $('cd-' + id).focus(); return; }
+      feedback.push({id:'f' + Date.now(), eventId:id, kind:'complaint', type:$('ct-' + id).value, text:txt});
+    } else return;
+    save('pe_feedback', feedback); openIds[id] = true; render(); renderCouncil(); renderManager();
+  });
+
+  var mode = 'in';
+  function setMode(m){
+    mode = m; $('m-tab-in').setAttribute('aria-pressed', m === 'in'); $('m-tab-up').setAttribute('aria-pressed', m === 'up');
+    $('m-org-wrap').hidden = m !== 'up';
+  }
+  $('m-tab-in').addEventListener('click', function(){ setMode('in'); });
+  $('m-tab-up').addEventListener('click', function(){ setMode('up'); });
+  $('m-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var em = $('m-email').value.trim();
+    if(!em){ $('m-email').focus(); return; }
+    manager = {email:em, org:mode === 'up' ? $('m-org').value.trim() : ''};
+    renderManager();
+  });
+  $('m-out').addEventListener('click', function(){ manager = null; renderManager(); });
+  $('ev-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var a = {}; ACCESS.forEach(function(x){ if($('ea-' + x[0]).checked) a[x[0]] = 1; });
+    var ev = {id:'u' + Date.now(), user:true, title:$('e-title').value.trim(), venue:$('e-venue').value.trim(), start:$('e-start').value, end:$('e-end').value || $('e-start').value,
+      cost:$('e-cost').value, cat:$('e-cat').value, access:a, parkingNote:$('e-parking').value.trim(), transitNote:$('e-transit').value.trim(), social:$('e-social').value.trim(), url:SRC + '/whats-on'};
+    if(ev.social && ev.social.indexOf('http') !== 0) ev.social = '';
+    function done(img){
+      if(img) ev.img = img;
+      userEvents.push(ev); save('pe_events', userEvents);
+      $('ev-form').reset(); render(); renderManager(); renderCouncil();
+    }
+    var f = $('e-img').files && $('e-img').files[0];
+    if(!f){ done(''); return; }
+    var fr = new FileReader();
+    fr.onload = function(){
+      var im = new Image();
+      im.onload = function(){
+        var s = Math.min(1, 640 / Math.max(im.width, im.height)), c = document.createElement('canvas');
+        c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        done(c.toDataURL('image/jpeg', 0.75));
+      };
+      im.onerror = function(){ done(''); };
+      im.src = fr.result;
+    };
+    fr.onerror = function(){ done(''); };
+    fr.readAsDataURL(f);
+  });
+  $('m-listings').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-act="del"]'); if(!b) return;
+    var id = b.getAttribute('data-id');
+    userEvents = userEvents.filter(function(x){ return x.id !== id; }); feedback = feedback.filter(function(f){ return f.eventId !== id; });
+    save('pe_events', userEvents); save('pe_feedback', feedback); render(); renderManager(); renderCouncil();
+  });
+  window.addEventListener('hashchange', showView);
+  showView(); render(); renderCouncil();
+}
+init();
+})();
+</script>
+
+</body></html>
