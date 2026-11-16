@@ -17,7 +17,7 @@ const SOURCE_LABELS: Record<DataSource, string> = {
   council: "City of Parramatta published info",
   participant: "Community report",
   synthetic: "Synthetic (dummy)",
-  ai_suggested: "AI-suggested (unverified)",
+  ai_suggested: "Suggested, not yet verified",
 };
 
 function daysAgo(n: number): string {

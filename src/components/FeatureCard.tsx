@@ -26,11 +26,6 @@ export function FeatureCard({
             <div className="flex flex-wrap items-center justify-between gap-2">
               <dt className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
                 {attribute.label}
-                {attribute.aiSuggested ? (
-                  <span className="ml-2 rounded bg-violet-100 px-1.5 py-0.5 text-xs font-medium text-violet-800 dark:bg-violet-950 dark:text-violet-200">
-                    AI-suggested
-                  </span>
-                ) : null}
               </dt>
               <dd className="flex items-center gap-2 text-sm text-zinc-900 dark:text-zinc-100">
                 {formatValue(attribute)}

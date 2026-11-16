@@ -104,11 +104,6 @@ export function RiskRegister({ risks }: { risks: RiskItem[] }) {
                   Approved by {r.approvedBy}
                 </span>
               ) : null}
-              {r.aiSuggested ? (
-                <span className="rounded bg-violet-100 px-1.5 py-0.5 text-xs font-medium text-violet-800 dark:bg-violet-950 dark:text-violet-200">
-                  AI-suggested
-                </span>
-              ) : null}
             </div>
           </li>
         ))}

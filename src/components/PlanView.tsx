@@ -13,10 +13,28 @@ import { EventFeedback } from "./EventFeedback";
 
 type Tab = "before" | "during" | "after";
 
-const TABS: { id: Tab; label: string; hint: string }[] = [
-  { id: "before", label: "Before you leave", hint: "Plan at home" },
-  { id: "during", label: "During the event", hint: "On site, works offline" },
-  { id: "after", label: "After", hint: "Help the next person" },
+const TABS: { id: Tab; label: string; hint: string; color: string; fg: string }[] = [
+  {
+    id: "before",
+    label: "Before you leave",
+    hint: "Plan at home",
+    color: "var(--color-brand)",
+    fg: "#ffffff",
+  },
+  {
+    id: "during",
+    label: "During the event",
+    hint: "On site, works offline",
+    color: "var(--color-mint)",
+    fg: "var(--color-brand)",
+  },
+  {
+    id: "after",
+    label: "After",
+    hint: "Help the next person",
+    color: "var(--color-lav)",
+    fg: "var(--color-brand)",
+  },
 ];
 
 function dateLabel(plan: AccessPlan): string {
@@ -102,31 +120,48 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
 
       <NeedSelector selected={selected} onChange={setSelected} />
 
-      <div role="tablist" aria-label="Journey stage" className="flex flex-wrap gap-2">
-        {TABS.map((t) => {
-          const active = tab === t.id;
-          return (
-            <button
-              key={t.id}
-              role="tab"
-              id={`tab-${t.id}`}
-              aria-selected={active}
-              aria-controls={`panel-${t.id}`}
-              onClick={() => setTab(t.id)}
-              className="rounded-xl border-2 px-4 py-2 text-left text-sm"
-              style={{
-                borderColor: active ? "var(--color-accent)" : "var(--border)",
-                background: active ? "var(--surface-soft)" : "var(--surface)",
-              }}
-            >
-              <span className="block font-bold">{t.label}</span>
-              <span className="block text-xs" style={{ color: "var(--page-fg-soft)" }}>
-                {t.hint}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+      <section className="space-y-2">
+        <h2 className="font-display text-lg font-bold">Your visit, step by step</h2>
+        <div role="tablist" aria-label="Journey stage" className="grid gap-3 sm:grid-cols-3">
+          {TABS.map((t, index) => {
+            const active = tab === t.id;
+            return (
+              <button
+                key={t.id}
+                role="tab"
+                id={`tab-${t.id}`}
+                aria-selected={active}
+                aria-controls={`panel-${t.id}`}
+                onClick={() => setTab(t.id)}
+                className="flex flex-col gap-1.5 rounded-2xl border-2 px-5 py-4 text-left transition-all hover:-translate-y-0.5"
+                style={{
+                  borderColor: t.color,
+                  background: active ? t.color : "var(--surface)",
+                  color: active ? t.fg : "var(--page-fg)",
+                  boxShadow: active ? "0 10px 24px -12px rgba(3,79,132,0.65)" : undefined,
+                }}
+              >
+                <span className="flex items-center gap-2.5">
+                  <span
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-base font-bold"
+                    aria-hidden="true"
+                    style={{
+                      background: active ? t.fg : t.color,
+                      color: active ? t.color : t.fg,
+                    }}
+                  >
+                    {index + 1}
+                  </span>
+                  <span className="font-display text-lg font-bold">{t.label}</span>
+                </span>
+                <span className="text-sm" style={{ color: active ? t.fg : "var(--page-fg-soft)" }}>
+                  {t.hint}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       <section id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`} className="space-y-4">
         {tab === "before" ? (
@@ -134,7 +169,7 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
             <div className="flex flex-wrap items-center gap-3">
               <SpeakButton
                 label="Listen to this section"
-                text="Before you leave. A schematic map of access features, a button to save the plan for offline use, and a card for each feature showing whether it is verified, needs checking, or is missing."
+                text="Before you leave. A map of the access features, a button to save the plan for offline use, and a card for each feature showing whether it is verified, needs checking, or is missing."
               />
             </div>
             <AccessMap features={plan.features} selectedNeeds={selected} />

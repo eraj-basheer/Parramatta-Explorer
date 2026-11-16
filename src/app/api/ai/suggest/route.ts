@@ -102,7 +102,7 @@ export async function POST(request: Request) {
     aiSuggested: true,
     provenance: {
       source: "ai_suggested",
-      sourceLabel: "AI-suggested (unverified)",
+      sourceLabel: "Suggested, not yet verified",
       lastVerifiedAt: new Date().toISOString(),
       confidence: 40,
     },
