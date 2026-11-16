@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { Feature } from "@/lib/types";
 import { ProvenanceLine, formatValue } from "./ProvenanceLine";
 import { StatusBadge } from "./StatusBadge";
-import { featureStatus } from "@/lib/status";
+import { featureStatus, STATUS_META, statusFill } from "@/lib/status";
 
 export function FeatureCard({
   feature,
@@ -25,6 +25,22 @@ export function FeatureCard({
         </div>
         <StatusBadge status={featureStatus(feature)} />
       </div>
+
+      <ul className="mt-3 flex flex-wrap gap-1.5">
+        {feature.attributes.map((attribute) => (
+          <li
+            key={attribute.key}
+            className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium"
+            style={{ borderColor: "var(--border)", color: "var(--page-fg-soft)" }}
+            title={`${attribute.label}: ${formatValue(attribute)} — ${STATUS_META[attribute.status].label}`}
+          >
+            <span aria-hidden="true" style={{ color: statusFill(attribute.status) }}>
+              ●
+            </span>
+            {attribute.label}
+          </li>
+        ))}
+      </ul>
 
       <button
         type="button"
