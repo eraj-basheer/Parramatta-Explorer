@@ -113,8 +113,7 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
           </span>
         </div>
         <p className="mt-3 text-sm" style={{ color: "var(--page-fg-soft)" }}>
-          We show what is confirmed, what is missing, and what still needs checking — we do not
-          guess.
+          Confirmed, missing, or still to check — we never guess.
         </p>
       </section>
 
