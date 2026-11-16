@@ -10,7 +10,6 @@ import { StatusBadge } from "./StatusBadge";
 import { Disclaimer } from "./Disclaimer";
 import { SpeakButton } from "./SpeakButton";
 import { EventFeedback } from "./EventFeedback";
-import { featureStatus } from "@/lib/status";
 
 type Tab = "before" | "during" | "after";
 
@@ -59,11 +58,6 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
   const visibleFeatures = useMemo(
     () => plan.features.filter((f) => f.needs.some((n) => selected.includes(n))),
     [plan.features, selected],
-  );
-
-  const fullyVerified = useMemo(
-    () => visibleFeatures.filter((f) => featureStatus(f) === "verified").length,
-    [visibleFeatures],
   );
 
   const counts = useMemo(() => {
@@ -192,12 +186,6 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
                   : "Works without a signal — the venue is where the network is not."}
               </span>
             </div>
-            {visibleFeatures.length ? (
-              <p className="text-sm font-semibold" style={{ color: "var(--page-fg-soft)" }}>
-                {fullyVerified} of {visibleFeatures.length} feature
-                {visibleFeatures.length === 1 ? "" : "s"} fully verified
-              </p>
-            ) : null}
             <div className="grid gap-4">
               {visibleFeatures.length ? (
                 visibleFeatures.map((f) => (
