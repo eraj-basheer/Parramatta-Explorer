@@ -10,6 +10,8 @@ import { StatusBadge } from "./StatusBadge";
 import { Disclaimer } from "./Disclaimer";
 import { SpeakButton } from "./SpeakButton";
 import { EventFeedback } from "./EventFeedback";
+import { BookingForm } from "./BookingForm";
+import { getParraEvent } from "@/lib/events";
 
 type Tab = "before" | "during" | "after";
 
@@ -55,6 +57,10 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
   const [tab, setTab] = useState<Tab>("before");
   const [saved, setSaved] = useState(false);
 
+  const parraEvent = getParraEvent(plan.event.id);
+  const emoji = parraEvent?.emoji;
+  const price = parraEvent?.price ?? 0;
+
   const visibleFeatures = useMemo(
     () => plan.features.filter((f) => f.needs.some((n) => selected.includes(n))),
     [plan.features, selected],
@@ -90,7 +96,14 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
           ) : null}
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-3xl font-bold">{plan.event.title}</h1>
+          <h1 className="font-display text-3xl font-bold">
+            {emoji ? (
+              <span className="ev-emoji" aria-hidden="true">
+                {emoji}
+              </span>
+            ) : null}{" "}
+            {plan.event.title}
+          </h1>
           <SpeakButton />
         </div>
         <p style={{ color: "var(--page-fg-soft)" }}>
@@ -98,6 +111,50 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
         </p>
         <Disclaimer />
       </header>
+
+      <section className="rounded-2xl border-2 p-4" style={{ borderColor: "var(--border)" }}>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-64 flex-1 space-y-2">
+            <h2 className="font-display text-lg font-bold">Event details</h2>
+            {parraEvent ? (
+              <>
+                <p>{parraEvent.blurb}</p>
+                <p className="text-sm">
+                  <strong>When:</strong> {parraEvent.when} · <strong>Cost:</strong>{" "}
+                  {parraEvent.price > 0 ? `$${parraEvent.price}` : "Free"} ·{" "}
+                  <strong>Where:</strong> {parraEvent.place}
+                </p>
+                <p className="text-sm" style={{ color: "var(--page-fg-soft)" }}>
+                  Source: {parraEvent.source}. Dates recur annually, so confirm the current date and any
+                  ticket needs with the organiser.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  {plan.event.title} is a hypothetical test event used to try out the organiser
+                  workspace, so these details are examples rather than a real listing.
+                </p>
+                <p className="text-sm">
+                  <strong>When:</strong> {dateLabel(plan)} · <strong>Where:</strong> {plan.venue.name} ·{" "}
+                  <strong>Organiser:</strong> {plan.event.organiser}
+                </p>
+              </>
+            )}
+          </div>
+          <div className="space-y-2" style={{ maxWidth: "20rem" }}>
+            <a
+              href="#booking"
+              className="inline-block rounded-full bg-sun px-6 py-3 font-bold text-brand hover:brightness-95"
+            >
+              Book tickets <span aria-hidden="true">↓</span>
+            </a>
+            <p className="text-xs" style={{ color: "var(--page-fg-soft)" }}>
+              Prototype demo: the booking form below doesn&apos;t issue real tickets.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <section className="rounded-2xl border-2 p-4" style={{ borderColor: "var(--border)" }}>
         <h2 className="font-display text-lg font-bold">At a glance</h2>
@@ -235,6 +292,8 @@ export function PlanView({ plan }: { plan: AccessPlan }) {
           <EventFeedback eventId={plan.event.id} />
         ) : null}
       </section>
+
+      <BookingForm eventId={plan.event.id} price={price} />
     </div>
   );
 }

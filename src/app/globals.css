@@ -116,6 +116,65 @@ body {
   line-height: 1.55;
 }
 
+.ev-emoji {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  margin-right: 0.15em;
+}
+
+.ev-marker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  border: 3px solid #034f84;
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+}
+
+.ev-marker .n {
+  position: absolute;
+  right: -7px;
+  top: -7px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background: #034f84;
+  color: #fff;
+  font: 700 12px/20px var(--font-sans, sans-serif);
+  text-align: center;
+  border: 2px solid #fff;
+}
+
+.pop-list {
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.pop-list a {
+  color: #034f84;
+  font-weight: 700;
+}
+
+@media (forced-colors: active) {
+  .ev-marker {
+    border-color: CanvasText;
+    forced-color-adjust: none;
+    background: Canvas;
+    color: CanvasText;
+  }
+}
+
 :focus-visible {
   outline: 3px solid var(--color-sky);
   outline-offset: 3px;

@@ -8,10 +8,16 @@ export interface ParraEvent {
   distanceKm: number;
   when: string;
   color: string;
+  /** A single emoji shown beside the event name (presentation only). */
+  emoji: string;
   blurb: string;
   venue: string;
   venueId: string;
   source: string;
+  /** Approximate position for the map (hand-estimated, not surveyed). */
+  geo: { lat: number; lng: number };
+  /** Human-readable place label shown in map popups. */
+  place: string;
 }
 
 export const EVENT_CATEGORIES: { label: string; bg: string; ink: string }[] = [
@@ -34,6 +40,9 @@ export const EVENT_CATEGORIES: { label: string; bg: string; ink: string }[] = [
 export const PARRAMATTA_EVENTS: ParraEvent[] = [
   {
     id: "parramatta-lanes",
+    emoji: "🎶",
+    geo: { lat: -33.8165, lng: 151.0033 },
+    place: "CBD laneways",
     title: "Parramatta Lanes",
     categories: ["Free", "Music", "Food", "Culture"],
     price: 0,
@@ -47,6 +56,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "diwali",
+    emoji: "🪔",
+    geo: { lat: -33.8151, lng: 151.0011 },
+    place: "Parramatta Square",
     title: "Diwali",
     categories: ["Free", "Culture", "Family"],
     price: 0,
@@ -60,6 +72,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "christmas-in-parramatta",
+    emoji: "🎄",
+    geo: { lat: -33.8156, lng: 151.002 },
+    place: "Parramatta Square and CBD",
     title: "Christmas in Parramatta",
     categories: ["Free", "Family", "Music"],
     price: 0,
@@ -73,6 +88,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "new-years-eve",
+    emoji: "🎆",
+    geo: { lat: -33.81, lng: 151.0 },
+    place: "Parramatta Park and CBD",
     title: "New Year's Eve",
     categories: ["Free", "Music", "Family"],
     price: 0,
@@ -86,6 +104,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "lunar-new-year",
+    emoji: "🧧",
+    geo: { lat: -33.8148, lng: 151.0007 },
+    place: "Parramatta Square",
     title: "Lunar New Year",
     categories: ["Free", "Culture", "Family"],
     price: 0,
@@ -99,6 +120,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "australia-day",
+    emoji: "🇦🇺",
+    geo: { lat: -33.8112, lng: 151.0035 },
+    place: "Parramatta Park and riverfront",
     title: "Australia Day in Parramatta",
     categories: ["Free", "Family", "Music"],
     price: 0,
@@ -112,6 +136,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "warami",
+    emoji: "🎨",
+    geo: { lat: -33.814, lng: 151.0025 },
+    place: "Across Parramatta (CBD centre shown)",
     title: "Warami",
     categories: ["Free", "First Nations", "Culture"],
     price: 0,
@@ -126,6 +153,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "burramatta-naidoc",
+    emoji: "🌅",
+    geo: { lat: -33.809, lng: 150.999 },
+    place: "Parramatta Park",
     title: "Burramatta NAIDOC",
     categories: ["Free", "First Nations", "Culture", "Family"],
     price: 0,
@@ -139,6 +169,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "make-music-day",
+    emoji: "🎸",
+    geo: { lat: -33.816, lng: 151.0015 },
+    place: "Parramatta CBD",
     title: "Make Music Day",
     categories: ["Free", "Music", "Culture"],
     price: 0,
@@ -152,6 +185,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "winterlight",
+    emoji: "⛸️",
+    geo: { lat: -33.8154, lng: 151.0014 },
+    place: "Parramatta Square",
     title: "Winterlight",
     categories: ["Family", "Culture"],
     price: 12,
@@ -165,6 +201,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "farmers-market",
+    emoji: "🥕",
+    geo: { lat: -33.8149, lng: 151.0028 },
+    place: "Centenary Square",
     title: "Parramatta Farmers Market",
     categories: ["Free", "Markets", "Food"],
     price: 0,
@@ -178,6 +217,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "riverside-food-market",
+    emoji: "🍜",
+    geo: { lat: -33.8127, lng: 151.0052 },
+    place: "Parramatta River foreshore",
     title: "Riverside Food Market",
     categories: ["Free", "Food", "Markets", "Riverside"],
     price: 0,
@@ -191,6 +233,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "family-movie-night",
+    emoji: "🎬",
+    geo: { lat: -33.8145, lng: 151.0016 },
+    place: "Outdoor venue (position approximate)",
     title: "Family Movie Night",
     categories: ["Free", "Family"],
     price: 0,
@@ -204,6 +249,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "seniors-festival",
+    emoji: "🌻",
+    geo: { lat: -33.8158, lng: 151.0025 },
+    place: "Parramatta CBD",
     title: "Seniors Festival",
     categories: ["Free", "Culture"],
     price: 0,
@@ -217,6 +265,9 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
   },
   {
     id: "youth-week",
+    emoji: "🛹",
+    geo: { lat: -33.8152, lng: 151.0003 },
+    place: "Parramatta CBD",
     title: "Youth Week",
     categories: ["Free", "Music", "Culture"],
     price: 0,
@@ -232,4 +283,48 @@ export const PARRAMATTA_EVENTS: ParraEvent[] = [
 
 export function getParraEvent(id: string): ParraEvent | undefined {
   return PARRAMATTA_EVENTS.find((e) => e.id === id);
+}
+
+export const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+/**
+ * Best-effort mapping from a free-text `when` label to month numbers (1-12).
+ * Returns null when no month is named (e.g. "Every Friday", "This weekend"),
+ * which the calendar treats as an ongoing or recurring event.
+ */
+export function eventMonths(when?: string): number[] | null {
+  const text = String(when ?? "").toLowerCase();
+  const found: { n: number; at: number }[] = [];
+  MONTH_NAMES.forEach((name, i) => {
+    const at = text.indexOf(name.toLowerCase());
+    if (at !== -1) found.push({ n: i + 1, at });
+  });
+  if (!found.length) return null;
+  found.sort((a, b) => a.at - b.at);
+  if (found.length === 2 && /[-–—]/.test(text) && !text.includes("/")) {
+    const out: number[] = [];
+    const start = found[0].n;
+    const end = found[1].n;
+    let month = start;
+    for (let guard = 0; guard < 12; guard++) {
+      out.push(month);
+      if (month === end) break;
+      month = (month % 12) + 1;
+    }
+    return out;
+  }
+  return found.map((m) => m.n);
 }

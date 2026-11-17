@@ -4,10 +4,21 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { EVENT_CATEGORIES, type ParraEvent } from "@/lib/events";
 import { SpeakButton } from "./SpeakButton";
+import { EventsMap } from "./EventsMap";
+import { EventCalendar } from "./EventCalendar";
+
+const VIEWS = [
+  { id: "list", label: "List" },
+  { id: "map", label: "Map" },
+  { id: "calendar", label: "Calendar" },
+] as const;
+
+type ViewId = (typeof VIEWS)[number]["id"];
 
 export function ExploreView({ events }: { events: ParraEvent[] }) {
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState("All");
+  const [view, setView] = useState<ViewId>("list");
 
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -98,9 +109,36 @@ export function ExploreView({ events }: { events: ParraEvent[] }) {
         </button>
       </div>
 
-      <p aria-live="polite" className="font-semibold">
-        Showing {shown.length} of {events.length} events
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p aria-live="polite" className="font-semibold">
+          Showing {shown.length} of {events.length} events
+        </p>
+        <div
+          className="inline-flex overflow-hidden rounded-full border-2"
+          role="group"
+          aria-label="Change how events are shown"
+          style={{ borderColor: "var(--color-brand)" }}
+        >
+          {VIEWS.map((v) => {
+            const active = view === v.id;
+            return (
+              <button
+                key={v.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setView(v.id)}
+                className="min-h-11 px-5 py-1.5 text-sm font-bold"
+                style={{
+                  background: active ? "var(--color-brand)" : "var(--surface)",
+                  color: active ? "#ffffff" : "var(--page-fg)",
+                }}
+              >
+                {v.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       {shown.length === 0 ? (
         <div className="rounded-2xl p-8" style={{ background: "var(--surface-soft)" }}>
@@ -114,40 +152,47 @@ export function ExploreView({ events }: { events: ParraEvent[] }) {
             Reset filters
           </button>
         </div>
+      ) : view === "calendar" ? (
+        <EventCalendar events={shown} />
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {shown.map((e) => (
-            <Link
-              key={e.id}
-              href={`/plan/${e.id}`}
-              className="group flex flex-col overflow-hidden rounded-2xl border-2 transition-transform hover:-translate-y-1"
-              style={{ borderColor: "var(--surface-soft)", background: "var(--surface)" }}
-            >
-              <div
-                className="flex items-start justify-between gap-2 p-4"
-                style={{ background: e.color, color: "#034f84" }}
+        <div className="space-y-4">
+          {view === "map" && <EventsMap events={shown} />}
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {shown.map((e) => (
+              <Link
+                key={e.id}
+                href={`/plan/${e.id}`}
+                className="group flex flex-col overflow-hidden rounded-2xl border-2 transition-transform hover:-translate-y-1"
+                style={{ borderColor: "var(--surface-soft)", background: "var(--surface)" }}
               >
-                <span className="rounded-full bg-white px-2.5 py-0.5 text-xs font-bold">
-                  {e.categories.slice(0, 2).join(" / ")}
-                </span>
-                <span className="rounded-full bg-brand px-3 py-0.5 text-xs font-bold text-white">
-                  {e.price === 0 ? "Free" : `$${e.price}`}
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col gap-1 p-4">
-                <h3 className="font-display text-lg font-bold">{e.title}</h3>
-                <p className="text-sm" style={{ color: "var(--page-fg-soft)" }}>
-                  {e.when}
-                </p>
-                <p className="mt-1 text-sm" style={{ color: "var(--page-fg-soft)" }}>
-                  {e.blurb}
-                </p>
-                <span className="mt-3 text-sm font-bold text-accent group-hover:underline">
-                  View access plan →
-                </span>
-              </div>
-            </Link>
-          ))}
+                <div
+                  className="flex items-start justify-between gap-2 p-4"
+                  style={{ background: e.color, color: "#034f84" }}
+                >
+                  <span className="rounded-full bg-white px-2.5 py-0.5 text-xs font-bold">
+                    {e.categories.slice(0, 2).join(" / ")}
+                  </span>
+                  <span className="rounded-full bg-brand px-3 py-0.5 text-xs font-bold text-white">
+                    {e.price === 0 ? "Free" : `$${e.price}`}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col gap-1 p-4">
+                  <h3 className="font-display text-lg font-bold">
+                    <span className="ev-emoji" aria-hidden="true">{e.emoji}</span> {e.title}
+                  </h3>
+                  <p className="text-sm" style={{ color: "var(--page-fg-soft)" }}>
+                    {e.when}
+                  </p>
+                  <p className="mt-1 text-sm" style={{ color: "var(--page-fg-soft)" }}>
+                    {e.blurb}
+                  </p>
+                  <span className="mt-3 text-sm font-bold text-accent group-hover:underline">
+                    Event details · Access plan · Booking →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </div>
