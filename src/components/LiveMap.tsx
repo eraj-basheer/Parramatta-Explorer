@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Map as MLMap, Marker as MLMarker } from "maplibre-gl";
 import type { Feature, NeedId } from "@/lib/types";
-import { STATUS_META, statusFill, featureStatus } from "@/lib/status";
+import { STATUS_META, featureStatus } from "@/lib/status";
+import { featurePinHtml, featureTypeLabel } from "@/lib/featureIcons";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 
@@ -107,18 +108,17 @@ export function LiveMap({
     markersRef.current = points.map((f) => {
       const status = featureStatus(f);
       const el = document.createElement("div");
-      el.style.width = "20px";
-      el.style.height = "20px";
-      el.style.borderRadius = "9999px";
-      el.style.background = statusFill(status);
-      el.style.border = "2px solid #ffffff";
-      el.style.boxShadow = "0 1px 4px rgba(0,0,0,0.45)";
-      el.setAttribute("aria-hidden", "true");
+      el.innerHTML = featurePinHtml(f.type, status);
+      el.setAttribute("role", "button");
+      el.setAttribute(
+        "aria-label",
+        `${f.name}, ${featureTypeLabel(f.type)}, ${STATUS_META[status].label}`,
+      );
 
       const popup = new mod.Popup({ offset: 16 }).setHTML(
         `<strong>${escapeHtml(f.name)}</strong><br/>` +
           `<span style="color:#444">${escapeHtml(f.locationNote)}</span><br/>` +
-          `<span>${escapeHtml(STATUS_META[status].label)}</span>`,
+          `<span>${escapeHtml(featureTypeLabel(f.type))} · ${escapeHtml(STATUS_META[status].label)}</span>`,
       );
 
       return new mod.Marker({ element: el })
